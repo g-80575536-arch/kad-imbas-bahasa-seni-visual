@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kad Imbas Digital PSV</title>
+    <style>
+        /* 1. GAYA AM HALAMAN (Gradien Cerah & Berwarna-warni) */
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #fff9e7 0%, #e8f8f5 50%, #eaf2f8 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #ff5722;
+            font-size: 2.6rem;
+            text-shadow: 3px 3px 0px #fff, 5px 5px 0px #f5b041;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #2e4053;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* 2. MENU BAHAGIAN (Butang Kategori Berwarna-warni) */
+        .menu-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .menu-btn {
+            color: #5d6d7e;
+            border: 3px solid white;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        #btnUnsur { background-color: #e1f5fe; }
+        #btnUnsur.active {
+            background-color: #00b0ff;
+            color: white;
+            border-color: #0091ea;
+            box-shadow: 0 6px 15px rgba(0, 176, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        #btnPrinsip { background-color: #f3e5f5; }
+        #btnPrinsip.active {
+            background-color: #d500f9;
+            color: white;
+            border-color: #aa00ff;
+            box-shadow: 0 6px 15px rgba(213, 0, 249, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* 3. STRUKTUR 3D KAD IMBAS */
+        .flashcard-wrapper {
+            width: 100%;
+            max-width: 480px; 
+            height: 380px; 
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 24px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            border: 6px solid white;
+            padding: 25px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card-front.unsur-warna {
+            background: linear-gradient(135deg, #4fc3f7, #0288d1);
+            color: white;
+        }
+
+        .card-front.prinsip-warna {
+            background: linear-gradient(135deg, #ff4081, #f50057);
+            color: white;
+        }
+
+        .card-front h2 {
+            font-size: 2.8rem;
+            margin: 0 0 15px 0;
+            text-shadow: 3px 3px rgba(0,0,0,0.15);
+            letter-spacing: 1px;
+        }
+
+        .tag {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            background-color: #fff176;
+            color: #2c3e50;
+            padding: 8px 20px;
+            border-radius: 25px;
+            box-shadow: 2px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Menggunakan latar belakang hijau pastel lembut supaya teks hitam kelihatan jelas */
+        .card-back {
+            background: linear-gradient(135deg, #a3e4d7, #a2d9ce); 
+            color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        /* PERUBAHAN: Warna tulisan huraian ditukar kepada hitam (#000000) */
+        .card-back p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+            color: #000000; /* Tulisan hitam tebal */
+            text-align: left;
+            text-shadow: none; /* Membuang bayang putih/kelam sedia ada */
+        }
+
+        .card-back::-webkit-scrollbar { width: 6px; }
+        .card-back::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+
+        /* 4. BAHAGIAN NAVIGASI BERWARNA-WARNI */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        #btnPrev {
+            background-color: #ff6ff3;
+            border-bottom: 4px solid #c936bd;
+            box-shadow: 0 4px 0 #c936bd;
+        }
+
+        #btnNext {
+            background-color: #00e676;
+            border-bottom: 4px solid #00c853;
+            box-shadow: 0 4px 0 #00c853;
+            color: #1b5e20;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: none !important;
+            border-bottom: none !important;
+        }
+
+        .counter {
+            font-size: 1.3rem;
+            color: #ff5722;
+            font-weight: bold;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 15px;
+            border: 3px solid #ff5722;
+            box-shadow: 3px 3px 0px #f5b041;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jom Belajar Bahasa Seni Visual PSV</h1>
+    <p class="subtitle">Klik butang kategori bawah, kemudian klik kad untuk melihat jawapan rahsia!</p>
+
+    <!-- Pilihan Menu Utama -->
+    <div class="menu-container">
+        <button class="menu-btn active" id="btnUnsur" onclick="switchCategory('Unsur Seni')">🎨 Unsur Seni</button>
+        <button class="menu-btn" id="btnPrinsip" onclick="switchCategory('Prinsip Rekaan')">✨ Prinsip Rekaan</button>
+    </div>
+
+    <!-- Komponen Utama Kad Imbas -->
+    <div class="flashcard-wrapper" onclick="toggleFlip()">
+        <div class="flashcard" id="flashcardItem">
+            <!-- Hadapan -->
+            <div class="card-face card-front unsur-warna" id="cardFrontFace">
+                <h2 id="displayTitle">Garisan</h2>
+                <span class="tag" id="displayCategory">Unsur Seni</span>
+            </div>
+            <!-- Belakang -->
+            <div class="card-face card-back">
+                <p id="displayDesc">Kandungan maksud akan dipaparkan di sini...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sistem Navigasi -->
+    <div class="controls">
+        <button class="nav-btn" id="btnPrev" onclick="navigateCard(-1)">◀ Balik</button>
+        <div class="counter" id="displayCounter">1 / 6</div>
+        <button class="nav-btn" id="btnNext" onclick="navigateCard(1)">Seterusnya ▶</button>
+    </div>
+
+    <script>
+        // DATASET LENGKAP
+        const masterDataset = [
+            // --- 1. UNSUR SENI ---
+            { 
+                title: "Garisan", 
+                category: "Unsur Seni", 
+                desc: "Kesan titik yang bergerak di atas sesuatu permukaan. Ia merupakan bermulanya penghasilan rupa dan bentuk (contoh: garisan tebal, putus-putus, beralun)." 
+            },
+            { 
+                title: "Rupa", 
+                category: "Unsur Seni", 
+                desc: "Kawasan rata dikelilingi garisan luar (2D, tiada isi padu).<br><br><b>1. Rupa Geometri:</b> Mempunyai sudut, garisan tepat, formal & diukur dengan alat matematik. (Contoh: Segi empat, segitiga, bulatan, trapezium).<br><br><b>2. Rupa Organik:</b> Bebas, tidak sekata, spontan & meniru alam semula jadi. (Contoh: Daun, bunga, titisan air, awan)." 
+            },
+            { 
+                title: "Bentuk", 
+                category: "Unsur Seni", 
+                desc: "<b>1. Elemen 2D (Dua Dimensi):</b> Objek rata. Hanya mempunyai dua ukuran dimensi (panjang/lebar dan tinggi). Tiada ketebalan, tiada isi padu, tidak mengambil ruang fizikal & dilihat dari satu arah. (Contoh: Lukisan, gambar foto, bayang-bayang).<br><br><b>2. Elemen 3D (Tiga Dimensi):</b> Mempunyai tiga ukuran (panjang, tinggi, lebar/kedalaman). Mempunyai isi padu, berat, struktur fizikal & boleh dilihat/disentuh dari pelbagai sudut. (Contoh: Kotak hadiah, bola, tin)." 
+            },
+            { 
+                title: "Jalinan", 
+                category: "Unsur Seni", 
+                desc: "<b>1. Jalinan Sentuh:</b> Jalinan yang boleh dirasai melalui sentuhan tangan dan dilihat secara visual. Mempunyai struktur nyata, timbul, kasar, licin, atau berduri secara fizikal. (Contoh: Kulit durian, kulit pokok kasar, bulu kucing, kain tuala, arca, kolaj, tembikar).<br><br><b>2. Jalinan Tampak:</b> Jalinan yang hanya boleh dilihat tetapi tidak dapat dirasai apabila disentuh (fizikal rata dan licin). Wujud sebagai ilusi, kesan gambar, atau lukisan 2D sahaja. (Contoh: Corak sayap rama-rama, belang harimau, kertas dinding corak batu bata)." 
+            },
+            { 
+                title: "Ruang", 
+                category: "Unsur Seni", 
+                desc: "Kawasan kosong yang terdapat di sekeliling, di dalam, atau di antara objek. Terbahagi kepada ruang nyata (fizikal) dan ruang ilusi (dalam lukisan)." 
+            },
+            { 
+                title: "Warna", 
+                category: "Unsur Seni", 
+                desc: "Kesan cahaya yang dipantulkan ke mata kita. Terbahagi kepada warna asas (merah, biru, kuning), warna sekunder, dan warna tertier." 
+            },
+            
+            // --- 2. PRINSIP REKAAN ---
+            { title: "Harmoni", category: "Prinsip Rekaan", desc: "Wujud apabila unsur-unsur seni yang digunakan mempunyai tema atau ciri-ciri yang hampir sama, sekaligus memberikan rasa tenteram dan selesa." },
+            { title: "Kontras", category: "Prinsip Rekaan", desc: "Terhasil apabila dua unsur seni yang digunakan saling bercanggah atau berbeza sama sekali (contoh: warna hitam lwn putih, bentuk besar lwn kecil). Ia berfungsi untuk menarik perhatian." },
+            { title: "Penegasan", category: "Prinsip Rekaan", desc: "Titik fokus atau elemen utama yang paling menyerlah dalam sesebuah karya untuk menarik pandangan mata penonton." },
+            { title: "Imbangan", category: "Prinsip Rekaan", desc: "Keadaan kesamaan atau kesepadanan dari segi berat, tarikan, dan tumpuan dalam sesebuah gubahan. Boleh jadi imbangan simetri atau tidak simetri." },
+            { title: "Irama & Pergerakan", category: "Prinsip Rekaan", desc: "Kesan dinamik yang diwujudkan melalui pengulangan unsur-unsur seni secara berterusan, membuatkan karya kelihatan seolah-olah 'hidup' atau bergerak." },
+            { title: "Kepelbagaian", category: "Prinsip Rekaan", desc: "Penggunaan pelbagai unsur seni, gaya, dan teknik dalam satu karya untuk mengelakkan rasa bosan dan menjadikan karya lebih menarik." },
+            { title: "Kesatuan", category: "Prinsip Rekaan", desc: "Hubungan gabungan antara unsur seni dan prinsip rekaan yang disusun dengan baik bagi melahirkan satu tema atau idea yang lengkap dan sempurna." }
+        ];
+
+        let currentCategory = "Unsur Seni";
+        let filteredDataset = [];
+        let trackIndex = 0;
+
+        const domFlashcard = document.getElementById('flashcardItem');
+        const domFrontFace = document.getElementById('cardFrontFace');
+        const domTitle = document.getElementById('displayTitle');
+        const domCategory = document.getElementById('displayCategory');
+        const domDesc = document.getElementById('displayDesc');
+        const domCounter = document.getElementById('displayCounter');
+        const btnUnsur = document.getElementById('btnUnsur');
+        const btnPrinsip = document.getElementById('btnPrinsip');
+
+        function switchCategory(category) {
+            currentCategory = category;
+            trackIndex = 0;
+
+            if (category === "Unsur Seni") {
+                btnUnsur.classList.add('active');
+                btnPrinsip.classList.remove('active');
+                domFrontFace.classList.add('unsur-warna');
+                domFrontFace.classList.remove('prinsip-warna');
+            } else {
+                btnPrinsip.classList.add('active');
+                btnUnsur.classList.remove('active');
+                domFrontFace.classList.add('prinsip-warna');
+                domFrontFace.classList.remove('unsur-warna');
+            }
+
+            filteredDataset = masterDataset.filter(item => item.category === currentCategory);
+
+            if (domFlashcard.classList.contains('flipped')) {
+                domFlashcard.classList.remove('flipped');
+                setTimeout(() => { renderCardContent(); }, 300);
+            } else {
+                renderCardContent();
+            }
+        }
+
+        function toggleFlip() {
+            domFlashcard.classList.toggle('flipped');
+        }
+
+        function renderCardContent() {
+            const currentItem = filteredDataset[trackIndex];
+            domTitle.innerText = currentItem.title;
+            domCategory.innerText = currentItem.category;
+            domDesc.innerHTML = currentItem.desc; 
+            domCounter.innerText = `${trackIndex + 1} / ${filteredDataset.length}`;
+        }
+
+        function navigateCard(direction) {
+            if (domFlashcard.classList.contains('flipped')) {
+                domFlashcard.classList.remove('flipped');
+                setTimeout(() => { executeNavigation(direction); }, 300);
+            } else {
+                executeNavigation(direction);
+            }
+        }
+
+        function executeNavigation(direction) {
+            trackIndex += direction;
+            if (trackIndex >= filteredDataset.length) trackIndex = 0;
+            if (trackIndex < 0) trackIndex = filteredDataset.length - 1;
+            renderCardContent();
+        }
+
+        switchCategory('Unsur Seni');
+    </script>
+</body>
+</html>
