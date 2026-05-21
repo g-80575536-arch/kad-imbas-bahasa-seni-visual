@@ -3,365 +3,2036 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Kad Imbas Digital PSV</title>
+    <title>Kad Imbas Interaktif - Bahasa Seni Visual Tahun 2</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Fredoka (Fon bulat, comel & mesra kanak-kanak) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome untuk ikon menarik -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* 1. GAYA AM HALAMAN (Gradien Cerah & Berwarna-warni) */
         body {
-            font-family: 'Comic Sans MS', 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #fff9e7 0%, #e8f8f5 50%, #eaf2f8 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            font-family: 'Fredoka', sans-serif;
+            background-color: #f0fdf4; /* Light pastel green bg */
         }
-
-        h1 {
-            color: #ff5722;
-            font-size: 2.6rem;
-            text-shadow: 3px 3px 0px #fff, 5px 5px 0px #f5b041;
-            margin-bottom: 5px;
-            text-align: center;
-        }
-
-        .subtitle {
-            color: #2e4053;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        /* 2. MENU BAHAGIAN (Butang Kategori Berwarna-warni) */
-        .menu-container {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .menu-btn {
-            color: #5d6d7e;
-            border: 3px solid white;
-            padding: 12px 28px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        #btnUnsur { background-color: #e1f5fe; }
-        #btnUnsur.active {
-            background-color: #00b0ff;
-            color: white;
-            border-color: #0091ea;
-            box-shadow: 0 6px 15px rgba(0, 176, 255, 0.4);
-            transform: scale(1.05);
-        }
-
-        #btnPrinsip { background-color: #f3e5f5; }
-        #btnPrinsip.active {
-            background-color: #d500f9;
-            color: white;
-            border-color: #aa00ff;
-            box-shadow: 0 6px 15px rgba(213, 0, 249, 0.4);
-            transform: scale(1.05);
-        }
-
-        /* 3. STRUKTUR 3D KAD IMBAS */
-        .flashcard-wrapper {
-            width: 100%;
-            max-width: 480px; 
-            height: 380px; 
+        
+        /* 3D Card Flip styles */
+        .perspective {
             perspective: 1000px;
-            cursor: pointer;
         }
-
-        .flashcard {
-            width: 100%;
-            height: 100%;
-            position: relative;
+        .preserve-3d {
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 24px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.6s;
         }
-
-        .flashcard.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        .backface-hidden {
             backface-visibility: hidden;
-            border-radius: 24px;
-            border: 6px solid white;
-            padding: 25px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
         }
-
-        .card-front.unsur-warna {
-            background: linear-gradient(135deg, #4fc3f7, #0288d1);
-            color: white;
-        }
-
-        .card-front.prinsip-warna {
-            background: linear-gradient(135deg, #ff4081, #f50057);
-            color: white;
-        }
-
-        .card-front h2 {
-            font-size: 2.8rem;
-            margin: 0 0 15px 0;
-            text-shadow: 3px 3px rgba(0,0,0,0.15);
-            letter-spacing: 1px;
-        }
-
-        .tag {
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            font-weight: bold;
-            background-color: #fff176;
-            color: #2c3e50;
-            padding: 8px 20px;
-            border-radius: 25px;
-            box-shadow: 2px 4px 0px rgba(0,0,0,0.1);
-        }
-
-        /* Menggunakan latar belakang hijau pastel lembut supaya teks hitam kelihatan jelas */
-        .card-back {
-            background: linear-gradient(135deg, #a3e4d7, #a2d9ce); 
-            color: white;
+        .flip-active {
             transform: rotateY(180deg);
-            overflow-y: auto;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
         }
 
-        /* PERUBAHAN: Warna tulisan huraian ditukar kepada hitam (#000000) */
-        .card-back p {
-            font-size: 1rem;
-            line-height: 1.5;
-            margin: 0;
-            color: #000000; /* Tulisan hitam tebal */
-            text-align: left;
-            text-shadow: none; /* Membuang bayang putih/kelam sedia ada */
+        /* Sparkle animation */
+        @keyframes sparkle {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+        }
+        .sparkle-effect {
+            animation: sparkle 0.8s ease-out forwards;
         }
 
-        .card-back::-webkit-scrollbar { width: 6px; }
-        .card-back::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 3px;
+        /* Bounce animations */
+        .bounce-slow {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* 4. BAHAGIAN NAVIGASI BERWARNA-WARNI */
-        .controls {
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        /* Custom scrollbar for active kids */
+        ::-webkit-scrollbar {
+            width: 10px;
         }
-
-        .nav-btn {
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.1s ease;
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
         }
-
-        #btnPrev {
-            background-color: #ff6ff3;
-            border-bottom: 4px solid #c936bd;
-            box-shadow: 0 4px 0 #c936bd;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
-
-        #btnNext {
-            background-color: #00e676;
-            border-bottom: 4px solid #00c853;
-            box-shadow: 0 4px 0 #00c853;
-            color: #1b5e20;
-        }
-
-        .nav-btn:active {
-            transform: translateY(4px);
-            box-shadow: none !important;
-            border-bottom: none !important;
-        }
-
-        .counter {
-            font-size: 1.3rem;
-            color: #ff5722;
-            font-weight: bold;
-            background-color: white;
-            padding: 8px 20px;
-            border-radius: 15px;
-            border: 3px solid #ff5722;
-            box-shadow: 3px 3px 0px #f5b041;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden text-slate-800">
 
-    <h1>Jom Belajar Bahasa Seni Visual PSV</h1>
-    <p class="subtitle">Klik butang kategori bawah, kemudian klik kad untuk melihat jawapan rahsia!</p>
-
-    <!-- Pilihan Menu Utama -->
-    <div class="menu-container">
-        <button class="menu-btn active" id="btnUnsur" onclick="switchCategory('Unsur Seni')">🎨 Unsur Seni</button>
-        <button class="menu-btn" id="btnPrinsip" onclick="switchCategory('Prinsip Rekaan')">✨ Prinsip Rekaan</button>
-    </div>
-
-    <!-- Komponen Utama Kad Imbas -->
-    <div class="flashcard-wrapper" onclick="toggleFlip()">
-        <div class="flashcard" id="flashcardItem">
-            <!-- Hadapan -->
-            <div class="card-face card-front unsur-warna" id="cardFrontFace">
-                <h2 id="displayTitle">Garisan</h2>
-                <span class="tag" id="displayCategory">Unsur Seni</span>
+    <!-- TOP HEADER -->
+    <header class="bg-white shadow-md border-b-4 border-yellow-400 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="changeTab('belajar')">
+                <div class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-2.5 rounded-2xl shadow-md text-white bounce-slow">
+                    <i class="fa-solid fa-palette text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-600 to-blue-600 tracking-wide">
+                        DUNIA SENI VISUAL
+                    </h1>
+                    <p class="text-xs sm:text-sm text-emerald-600 font-semibold flex items-center gap-1">
+                        <span>Kad Imbas Interaktif Tahun 2</span> 
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px]">KSSR Semakan</span>
+                    </p>
+                </div>
             </div>
-            <!-- Belakang -->
-            <div class="card-face card-back">
-                <p id="displayDesc">Kandungan maksud akan dipaparkan di sini...</p>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex items-center bg-slate-100 p-1.5 rounded-2xl shadow-inner gap-1">
+                <button id="btn-belajar" onclick="changeTab('belajar')" class="px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all bg-white text-pink-600 shadow-sm">
+                    <i class="fa-solid fa-book-open"></i> Kad Imbas
+                </button>
+                <button id="btn-aktiviti" onclick="changeTab('aktiviti')" class="px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all text-slate-600 hover:text-purple-600">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Cuba Sendiri
+                </button>
+                <button id="btn-kuiz" onclick="changeTab('kuiz')" class="px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all text-slate-600 hover:text-emerald-600">
+                    <i class="fa-solid fa-gamepad"></i> Kuiz Seni
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- Tab 1: KAD IMBAS (BELAJAR) -->
+        <section id="tab-belajar" class="space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-800">Jom Kenali Bahasa Seni Visual!</h2>
+                <p class="text-slate-600">Terokai modul pembelajaran interaktif di bawah dengan memilih kategori Unsur Seni atau Prinsip Rekaan!</p>
+            </div>
+
+            <!-- Category Switcher for Flashcards -->
+            <div class="flex justify-center gap-4 py-2 flex-wrap">
+                <button id="subtab-unsur" onclick="toggleSubCategory('unsur')" class="px-6 py-2.5 rounded-2xl font-bold text-sm shadow-md transition-all bg-pink-500 text-white border-2 border-pink-600 scale-105">
+                    🎨 Unsur Seni (6 Asas)
+                </button>
+                <button id="subtab-prinsip" onclick="toggleSubCategory('prinsip')" class="px-6 py-2.5 rounded-2xl font-bold text-sm shadow-md transition-all bg-white text-slate-700 hover:bg-purple-100 border-2 border-transparent">
+                    ✨ Prinsip Rekaan (7 Pilihan)
+                </button>
+            </div>
+
+            <!-- ===================== UNSUR SENI GRID ===================== -->
+            <div id="grid-unsur" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4 justify-items-center">
+                
+                <!-- CARD 1: GARISAN -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-yellow-400">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-amber-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-amber-800 tracking-wide uppercase">GARISAN</h3>
+                                <span class="text-xs font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full">(LINE)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-amber-200 shadow-inner group">
+                                <div class="absolute top-2 left-2 text-[10px] bg-yellow-100 border border-yellow-300 px-1.5 py-0.5 rounded shadow-sm text-yellow-800">Ketuk kucing! 🐱</div>
+                                <svg id="cat-svg" viewBox="0 0 200 200" class="w-40 h-40">
+                                    <path d="M40 140 C 20 120, 10 90, 20 70 C 25 65, 35 70, 30 85 C 25 100, 35 120, 50 135" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round"/>
+                                    <path d="M40 140 C 20 120, 10 90, 20 70" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,3"/>
+                                    <ellipse cx="100" cy="135" rx="45" ry="35" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+                                    <path d="M70 125 Q 100 150 130 125" fill="none" stroke="#ec4899" stroke-width="3" class="hover:stroke-pink-600 transition-colors cursor-help" onclick="playLineAudio('melengkung', event)"/>
+                                    <path d="M65 135 L 75 145 L 85 135 L 95 145 L 105 135 L 115 145 L 125 135 L 135 145" fill="none" stroke="#3b82f6" stroke-width="3" class="hover:stroke-blue-600 transition-colors cursor-help" onclick="playLineAudio('zigzag', event)"/>
+                                    <polygon points="70,80 60,40 90,65" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+                                    <polygon points="73,75 67,48 85,63" fill="#fcd34d"/>
+                                    <polygon points="130,80 140,40 110,65" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+                                    <polygon points="127,75 133,48 115,63" fill="#fcd34d"/>
+                                    <circle cx="100" cy="85" r="32" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+                                    <circle cx="88" cy="80" r="3" fill="#1e293b"/>
+                                    <circle cx="112" cy="80" r="3" fill="#1e293b"/>
+                                    <circle cx="82" cy="87" r="4" fill="#fca5a5" opacity="0.7"/>
+                                    <circle cx="118" cy="87" r="4" fill="#fca5a5" opacity="0.7"/>
+                                    <polygon points="97,87 103,87 100,91" fill="#f43f5e"/>
+                                    <path d="M96 94 Q 100 98 104 94" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="65" y1="83" x2="45" y2="80" stroke="#475569" stroke-width="1.5"/>
+                                    <line x1="65" y1="89" x2="40" y2="91" stroke="#475569" stroke-width="1.5"/>
+                                    <line x1="135" y1="83" x2="155" y2="80" stroke="#475569" stroke-width="1.5"/>
+                                    <line x1="135" y1="89" x2="160" y2="91" stroke="#475569" stroke-width="1.5"/>
+                                    <circle cx="80" cy="165" r="10" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+                                    <circle cx="120" cy="165" r="10" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+                                </svg>
+                                <div class="absolute top-[35%] left-[2%] bg-amber-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightLine('tebal', event)">Tebal ➔</div>
+                                <div class="absolute top-[18%] right-[1%] bg-amber-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightLine('nipis', event)">➔ Nipis</div>
+                                <div class="absolute bottom-[20%] left-[1%] bg-pink-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightLine('melengkung', event)">Melengkung ➔</div>
+                                <div class="absolute bottom-[25%] right-[2%] bg-blue-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightLine('zigzag', event)">➔ Zigzag</div>
+                            </div>
+                            <div class="bg-amber-100 rounded-xl p-2.5 text-center border border-amber-200">
+                                <h4 class="text-xs font-bold text-amber-800 uppercase mb-0.5">Contoh garisan:</h4>
+                                <p class="text-xs text-amber-900 leading-relaxed font-semibold">Tebal, Nipis, Melengkung, Putus-putus, Zigzag</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-amber-700">
+                                <button class="hover:text-amber-900 flex items-center gap-1 font-bold" onclick="speakText('Garisan. Contoh garisan: tebal, nipis, melengkung, putus-putus, dan zigzag.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full text-[10px]">Unsur 1</span>
+                                <button class="hover:text-amber-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-yellow-300 pb-2 mb-3">Fakta Garisan 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Garisan</strong> ialah kesan titik yang bergerak di atas sesuatu permukaan. Ia adalah elemen paling asas untuk menghasilkan lukisan menarik!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-amber-800 font-bold rounded-xl shadow hover:bg-yellow-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2: RUPA -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-orange-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-orange-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-orange-400 via-red-400 to-orange-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-orange-800 tracking-wide uppercase">RUPA</h3>
+                                <span class="text-xs font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full">(SHAPE)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-orange-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-orange-100 border border-orange-300 px-1.5 py-0.5 rounded shadow-sm text-orange-800">Ketuk bentuk! 🏠</div>
+                                <svg id="shape-svg" viewBox="0 0 200 200" class="w-40 h-40">
+                                    <circle cx="40" cy="50" r="18" fill="#fcd34d" stroke="#d97706" stroke-width="2.5" class="cursor-pointer" onclick="highlightShape('bulatan', event)"/>
+                                    <polygon points="100,60 50,110 150,110" fill="#ef4444" stroke="#b91c1c" stroke-width="2.5" class="cursor-pointer" onclick="highlightShape('segitiga', event)"/>
+                                    <rect x="65" y="110" width="70" height="60" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2.5" class="cursor-pointer" onclick="highlightShape('segiempat', event)"/>
+                                    <path d="M 160 130 C 145 130, 140 110, 155 95 C 170 80, 190 90, 185 110 C 195 120, 185 140, 160 130 Z" fill="#22c55e" stroke="#15803d" stroke-width="2.5" class="cursor-pointer" onclick="highlightShape('organik', event)"/>
+                                    <rect x="156" y="130" width="8" height="40" fill="#78350f" stroke="#451a03" stroke-width="2"/>
+                                </svg>
+                                <div class="absolute top-[18%] left-[2%] bg-yellow-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightShape('bulatan', event)">Bulatan ➔</div>
+                                <div class="absolute top-[38%] left-[25%] bg-red-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightShape('segitiga', event)">➔ Segi Tiga</div>
+                                <div class="absolute bottom-[28%] left-[6%] bg-blue-500 text-white text-[9px] px-1 rounded shadow cursor-pointer font-bold" onclick="highlightShape('segiempat', event)">Segiempat ➔</div>
+                                <div class="absolute top-[16%] right-[3%] bg-green-600 text-white text-[9px] px-1 rounded shadow font-bold" onclick="highlightShape('organik', event)">➔ Rupa Organik</div>
+                            </div>
+                            <div class="bg-orange-100 rounded-xl p-2.5 text-center border border-orange-200">
+                                <h4 class="text-xs font-bold text-orange-800 uppercase mb-0.5">Contoh rupa:</h4>
+                                <p class="text-xs text-orange-900 leading-relaxed font-semibold">Segiempat, Segi Tiga, Bulatan, Rupa Organik (Daun/Pokok)</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-orange-700">
+                                <button class="hover:text-orange-900 flex items-center gap-1 font-bold" onclick="speakText('Rupa. Contoh rupa: segiempat, segi tiga, bulatan, dan rupa organik.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-orange-200 text-orange-900 px-2 py-0.5 rounded-full text-[10px]">Unsur 2</span>
+                                <button class="hover:text-orange-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-orange-400 to-red-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-orange-300 pb-2 mb-3">Fakta Rupa 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Rupa</strong> terbentuk apabila garisan hujung bertemu. Rupa bersifat 2D (rata) dan tidak mempunyai ketebalan atau isi padu.
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-orange-800 font-bold rounded-xl shadow hover:bg-orange-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: JALINAN -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-emerald-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-emerald-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-emerald-800 tracking-wide uppercase">JALINAN</h3>
+                                <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">(TEXTURE)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-emerald-200 shadow-inner">
+                                <div class="absolute top-2 left-2 text-[10px] bg-emerald-100 border border-emerald-300 px-1.5 py-0.5 rounded shadow-sm text-emerald-800 font-bold animate-pulse">Usap haiwan! 🐰🐢</div>
+                                <div class="flex items-center gap-2 w-full px-4 justify-around">
+                                    <div class="flex flex-col items-center cursor-pointer" onclick="petAnimal('arnab', event)">
+                                        <svg viewBox="0 0 100 100" class="w-16 h-16">
+                                            <ellipse cx="40" cy="25" rx="6" ry="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                                            <ellipse cx="40" cy="25" rx="3" ry="12" fill="#fca5a5"/>
+                                            <ellipse cx="52" cy="25" rx="6" ry="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                                            <ellipse cx="52" cy="25" rx="3" ry="12" fill="#fca5a5"/>
+                                            <ellipse cx="50" cy="65" rx="25" ry="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                                            <circle cx="23" cy="65" r="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+                                            <circle cx="58" cy="45" r="18" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                                            <circle cx="64" cy="42" r="2.5" fill="#ef4444"/>
+                                            <polygon points="68,46 72,46 70,49" fill="#f43f5e"/>
+                                            <circle cx="60" cy="48" r="3" fill="#fca5a5" opacity="0.6"/>
+                                            <circle cx="45" cy="82" r="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                                            <circle cx="60" cy="82" r="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                                        </svg>
+                                        <span class="text-[9px] font-bold text-slate-500 bg-slate-100 px-1 py-0.5 rounded mt-1">Bulu Lembut</span>
+                                    </div>
+                                    <div class="flex flex-col items-center cursor-pointer" onclick="petAnimal('kura', event)">
+                                        <svg viewBox="0 0 100 100" class="w-16 h-16">
+                                            <ellipse cx="30" cy="45" rx="8" ry="16" fill="#4ade80" stroke="#16a34a" stroke-width="2" transform="rotate(-30, 30, 45)"/>
+                                            <ellipse cx="70" cy="45" rx="8" ry="16" fill="#4ade80" stroke="#16a34a" stroke-width="2" transform="rotate(30, 70, 45)"/>
+                                            <ellipse cx="50" cy="60" rx="26" ry="22" fill="#15803d" stroke="#166534" stroke-width="2"/>
+                                            <path d="M 50 38 Q 40 50 50 62 Q 60 50 50 38" fill="none" stroke="#bbf7d0" stroke-width="2"/>
+                                            <ellipse cx="50" cy="30" rx="10" ry="12" fill="#4ade80" stroke="#16a34a" stroke-width="2"/>
+                                            <circle cx="46" cy="26" r="1.5" fill="#1e293b"/>
+                                            <polygon points="48,82 52,82 50,92" fill="#4ade80" stroke="#16a34a" stroke-width="2"/>
+                                        </svg>
+                                        <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1 py-0.5 rounded mt-1">Kulit Kasar</span>
+                                    </div>
+                                </div>
+                                <div class="absolute top-[20%] left-[30%] bg-indigo-500 text-white text-[9px] px-1 rounded shadow font-bold" onclick="petAnimal('arnab', event)">➔ Jalinan Sentuh</div>
+                                <div class="absolute bottom-[20%] right-[3%] bg-emerald-600 text-white text-[9px] px-1 rounded shadow font-bold" onclick="petAnimal('kura', event)">Jalinan Tampak ➔</div>
+                            </div>
+                            <div class="bg-emerald-100 rounded-xl p-2.5 text-center border border-emerald-200">
+                                <h4 class="text-xs font-bold text-emerald-800 uppercase mb-0.5">Contoh jalinan:</h4>
+                                <p class="text-xs text-emerald-900 leading-relaxed font-semibold">Bulu Lembut (Arnab), Kulit Kasar (Kura-kura)</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-emerald-700">
+                                <button class="hover:text-emerald-900 flex items-center gap-1 font-bold" onclick="speakText('Jalinan. Contoh jalinan: Bulu Lembut pada arnab, kulit kasar pada kura-kura.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full text-[10px]">Unsur 3</span>
+                                <button class="hover:text-emerald-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-emerald-300 pb-2 mb-3">Fakta Jalinan 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Jalinan</strong> merujuk kepada sifat luaran permukaan benda. Ada jalinan sentuh (boleh dirasai dengan jari) dan jalinan tampak (hanya boleh dilihat seperti lukisan).
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-emerald-800 font-bold rounded-xl shadow hover:bg-emerald-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 4: WARNA -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-purple-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-purple-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-purple-800 tracking-wide uppercase">WARNA</h3>
+                                <span class="text-xs font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">(COLOUR)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-purple-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-purple-100 border border-purple-300 px-1.5 py-0.5 rounded shadow-sm text-purple-800">Tekan hirisan warna! 🎨</div>
+                                <svg id="color-wheel-svg" viewBox="0 0 200 200" class="w-40 h-40">
+                                    <circle cx="100" cy="100" r="30" fill="white" stroke="#64748b" stroke-width="1.5" z-index="10"/>
+                                    <path d="M 100 100 L 100 40 A 60 60 0 0 1 152 70 Z" fill="#ef4444" stroke="#ffffff" stroke-width="2" class="cursor-pointer" onclick="wheelClick('Merah (Warna Primer)', event)"/>
+                                    <path d="M 100 100 L 152 70 A 60 60 0 0 1 152 130 Z" fill="#f97316" stroke="#ffffff" stroke-width="2" class="cursor-pointer" onclick="wheelClick('Jingga (Warna Sekunder)', event)"/>
+                                    <path d="M 100 100 L 152 130 A 60 60 0 0 1 100 160 Z" fill="#facc15" stroke="#ffffff" stroke-width="2" class="cursor-pointer" onclick="wheelClick('Kuning (Warna Primer)', event)"/>
+                                    <path d="M 100 100 L 100 160 A 60 60 0 0 1 48 130 Z" fill="#22c55e" stroke="#ffffff" stroke-width="2" class="cursor-pointer" onclick="wheelClick('Hijau (Warna Sekunder)', event)"/>
+                                    <path d="M 100 100 L 48 130 A 60 60 0 0 1 48 70 Z" fill="#3b82f6" stroke="#ffffff" stroke-width="2" class="cursor-pointer" onclick="wheelClick('Biru (Warna Primer)', event)"/>
+                                    <path d="M 100 100 L 48 70 A 60 60 0 0 1 100 40 Z" fill="#a855f7" stroke="#ffffff" stroke-width="2" class="cursor-pointer" onclick="wheelClick('Ungu (Warna Sekunder)', event)"/>
+                                </svg>
+                                <div class="absolute top-[4%] left-[45%] text-[9px] font-bold text-red-500">Merah</div>
+                                <div class="absolute top-[20%] right-[3%] text-[9px] font-bold text-yellow-500">Kuning</div>
+                                <div class="absolute bottom-[20%] right-[3%] text-[9px] font-bold text-blue-500">Biru</div>
+                                <div class="absolute bottom-[4%] left-[45%] text-[9px] font-bold text-purple-500">Ungu</div>
+                            </div>
+                            <div class="bg-purple-100 rounded-xl p-2.5 text-center border border-purple-200">
+                                <h4 class="text-xs font-bold text-purple-800 uppercase mb-0.5">Kategori warna:</h4>
+                                <p class="text-xs text-purple-900 leading-relaxed font-semibold">
+                                    <span class="text-red-500">Primer</span> (Merah, Kuning, Biru) <br>
+                                    <span class="text-purple-600">Sekunder</span> (Jingga, Hijau, Ungu)
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-purple-700">
+                                <button class="hover:text-purple-900 flex items-center gap-1 font-bold" onclick="speakText('Warna. Warna Primer ialah Merah, Kuning, dan Biru. Warna Sekunder ialah Jingga, Hijau, dan Ungu.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-purple-200 text-purple-900 px-2 py-0.5 rounded-full text-[10px]">Unsur 4</span>
+                                <button class="hover:text-purple-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-purple-300 pb-2 mb-3">Fakta Warna 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Warna</strong> terjadi daripada tindakan cahaya. Warna Primer adalah warna asli, manakala Warna Sekunder terhasil bila dua warna primer dicampurkan!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-purple-800 font-bold rounded-xl shadow hover:bg-purple-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 5: BENTUK -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-pink-400">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-pink-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-pink-300 via-pink-400 to-pink-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-pink-800 tracking-wide uppercase">BENTUK</h3>
+                                <span class="text-xs font-bold text-pink-600 bg-pink-100 px-3 py-1 rounded-full">(FORM)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-pink-200 shadow-inner">
+                                <div class="absolute top-2 left-2 text-[10px] bg-pink-100 border border-pink-200 px-1.5 py-0.5 rounded shadow-sm text-pink-800">Ketuk bentuk 3D! 📦</div>
+                                <svg id="form-svg" viewBox="0 0 200 200" class="w-40 h-40">
+                                    <!-- 3D Cube -->
+                                    <g class="cursor-pointer" onclick="clickForm('Kubus', event)">
+                                        <polygon points="40,110 80,110 80,150 40,150" fill="#f43f5e" stroke="#be123c" stroke-width="2"/>
+                                        <polygon points="40,110 60,90 100,90 80,110" fill="#fda4af" stroke="#be123c" stroke-width="2"/>
+                                        <polygon points="80,110 100,90 100,130 80,150" fill="#f43f5e" opacity="0.8" stroke="#be123c" stroke-width="2"/>
+                                    </g>
+                                    <!-- 3D Cone -->
+                                    <g class="cursor-pointer" onclick="clickForm('Kon', event)">
+                                        <polygon points="140,150 110,90 170,90" fill="#facc15" stroke="#a16207" stroke-width="2" transform="rotate(180 140 120)"/>
+                                        <ellipse cx="140" cy="150" rx="30" ry="8" fill="#fef08a" stroke="#a16207" stroke-width="2"/>
+                                    </g>
+                                    <!-- 3D Cylinder -->
+                                    <g class="cursor-pointer" onclick="clickForm('Silinder', event)">
+                                        <rect x="85" y="30" width="35" height="45" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+                                        <ellipse cx="102.5" cy="30" rx="17.5" ry="5" fill="#93c5fd" stroke="#1d4ed8" stroke-width="2"/>
+                                        <ellipse cx="102.5" cy="75" rx="17.5" ry="5" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+                                    </g>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[5%] bg-rose-600 text-white text-[9px] px-1 rounded shadow font-bold">Kubus ➔</div>
+                                <div class="absolute bottom-[10%] right-[5%] bg-yellow-600 text-white text-[9px] px-1 rounded shadow font-bold">➔ Kon</div>
+                                <div class="absolute top-[15%] left-[23%] bg-blue-600 text-white text-[9px] px-1 rounded shadow font-bold">➔ Silinder</div>
+                            </div>
+                            <div class="bg-pink-100 rounded-xl p-2.5 text-center border border-pink-200">
+                                <h4 class="text-xs font-bold text-pink-800 uppercase mb-0.5">Contoh Bentuk:</h4>
+                                <p class="text-xs text-pink-900 leading-relaxed font-semibold">Kubus (Kotak), Sfera (Bola), Silinder (Tin)</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-pink-700">
+                                <button class="hover:text-pink-900 flex items-center gap-1 font-bold" onclick="speakText('Bentuk. Objek tiga dimensi yang mempunyai isipadu dan struktur nyata seperti kotak atau bola.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-pink-200 text-pink-900 px-2 py-0.5 rounded-full text-[10px]">Unsur 5</span>
+                                <button class="hover:text-pink-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-pink-400 to-rose-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-pink-300 pb-2 mb-3">Fakta Bentuk 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    Berbeza dengan Rupa, <strong>Bentuk</strong> mempunyai struktur 3D (tiga dimensi). Ia mempunyai ketinggian, lebar, serta isipadu nyata yang boleh dipegang!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-pink-800 font-bold rounded-xl shadow hover:bg-pink-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 6: RUANG -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-teal-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-teal-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-teal-300 via-teal-400 to-teal-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-teal-800 tracking-wide uppercase">RUANG</h3>
+                                <span class="text-xs font-bold text-teal-600 bg-teal-100 px-3 py-1 rounded-full">(SPACE)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-teal-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-teal-100 border border-teal-200 px-1.5 py-0.5 rounded shadow-sm text-teal-800">Kesan jarak kedalaman! ⛰️</div>
+                                <svg id="space-svg" viewBox="0 0 200 200" class="w-40 h-40">
+                                    <!-- Mountains (Ruang Belakang) -->
+                                    <polygon points="10,120 70,70 120,120" fill="#94a3b8" stroke="#64748b" stroke-width="1.5"/>
+                                    <polygon points="80,120 140,60 190,120" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+                                    <!-- Tiny Tree (Ruang Belakang) -->
+                                    <polygon points="170,110 165,120 175,120" fill="#16a34a"/>
+                                    <!-- Medium Tree (Ruang Tengah) -->
+                                    <polygon points="120,135 110,155 130,155" fill="#15803d"/>
+                                    <rect x="118" y="155" width="4" height="10" fill="#78350f"/>
+                                    <!-- Big Tree (Ruang Depan) -->
+                                    <polygon points="40,110 15,165 65,165" fill="#166534"/>
+                                    <rect x="35" y="165" width="10" height="20" fill="#451a03"/>
+                                </svg>
+                                <div class="absolute bottom-[8%] left-[2%] bg-emerald-800 text-white text-[9px] px-1 rounded shadow font-bold" onclick="clickSpace('depan', event)">Depan (Besar) ➔</div>
+                                <div class="absolute top-[25%] right-[2%] bg-slate-500 text-white text-[9px] px-1 rounded shadow font-bold" onclick="clickSpace('belakang', event)">➔ Belakang (Kecil)</div>
+                            </div>
+                            <div class="bg-teal-100 rounded-xl p-2.5 text-center border border-teal-200">
+                                <h4 class="text-xs font-bold text-teal-800 uppercase mb-0.5">Kawasan Ruang:</h4>
+                                <p class="text-xs text-teal-900 leading-relaxed font-semibold">Ruang Depan (Dekat), Ruang Tengah, Ruang Belakang (Jauh)</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-teal-700">
+                                <button class="hover:text-teal-900 flex items-center gap-1 font-bold" onclick="speakText('Ruang. Kawasan kosong di sekeliling atau di dalam objek yang menghasilkan kesan jarak dekat dan jauh.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-teal-200 text-teal-900 px-2 py-0.5 rounded-full text-[10px]">Unsur 6</span>
+                                <button class="hover:text-teal-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-teal-300 pb-2 mb-3">Fakta Ruang 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Ruang</strong> mencipta ilusi kedalaman. Objek di hadapan kelihatan lebih besar dan jelas, manakala objek yang terletak jauh di belakang kelihatan kecil serta kabur.
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-teal-800 font-bold rounded-xl shadow hover:bg-teal-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ===================== PRINSIP REKAAN GRID ===================== -->
+            <div id="grid-prinsip" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4 justify-items-center">
+                
+                <!-- CARD 7: IMBANGAN -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-blue-400">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-blue-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-blue-300 via-sky-400 to-blue-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-blue-800 tracking-wide uppercase">IMBANGAN</h3>
+                                <span class="text-xs font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">(BALANCE)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-blue-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-blue-100 border border-blue-200 px-1.5 py-0.5 rounded shadow-sm text-blue-800">Sentuh kepak simetri! 🦋</div>
+                                <svg id="balance-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickBalance(event)">
+                                    <path d="M 100,50 Q 50,20 50,70 Q 50,110 100,100" fill="#60a5fa" stroke="#1d4ed8" stroke-width="2"/>
+                                    <path d="M 100,50 Q 150,20 150,70 Q 150,110 100,100" fill="#60a5fa" stroke="#1d4ed8" stroke-width="2"/>
+                                    <path d="M 100,100 Q 60,110 70,130 Q 80,150 100,140" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1.5"/>
+                                    <path d="M 100,100 Q 140,110 130,130 Q 120,150 100,140" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1.5"/>
+                                    <ellipse cx="100" cy="95" rx="4" ry="45" fill="#1e3a8a"/>
+                                    <line x1="100" y1="50" x2="90" y2="30" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="100" y1="50" x2="110" y2="30" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="100" y1="20" x2="100" y2="170" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[25%] bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded shadow font-bold">Imbangan Simetri</div>
+                            </div>
+                            <div class="bg-blue-100 rounded-xl p-2.5 text-center border border-blue-200">
+                                <h4 class="text-xs font-bold text-blue-800 uppercase mb-0.5">Jenis Imbangan:</h4>
+                                <p class="text-xs text-blue-900 leading-relaxed font-semibold">Simetri (Sama kiri/kanan), Tidak Simetri (Berbeza)</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-blue-700">
+                                <button class="hover:text-blue-900 flex items-center gap-1 font-bold" onclick="speakText('Imbangan. Keadaan stabil yang sama berat di kedua-dua belah bahagian, seperti kepak rama-rama.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 1</span>
+                                <button class="hover:text-blue-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-blue-300 pb-2 mb-3">Fakta Imbangan 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Imbangan</strong> bermaksud kesamaan dan kestabilan. Imbangan Simetri mempunyai unsur rekaan yang sama serupa di kedua-dua belah bahagian kiri dan kanan.
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-blue-800 font-bold rounded-xl shadow hover:bg-blue-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 8: KONTRAS -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-indigo-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-indigo-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-indigo-300 via-indigo-400 to-indigo-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-indigo-800 tracking-wide uppercase">KONTRAS</h3>
+                                <span class="text-xs font-bold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">(CONTRAST)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-slate-900 rounded-2xl border-2 border-dashed border-indigo-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-indigo-900 border border-indigo-500 px-1.5 py-0.5 rounded shadow-sm text-indigo-100">Kontras tinggi! 🌟</div>
+                                <svg id="contrast-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickContrast(event)">
+                                    <polygon points="100,30 120,80 170,80 130,110 150,160 100,130 50,160 70,110 30,80 80,80" fill="#facc15" stroke="#eab308" stroke-width="3"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[12%] bg-yellow-400 text-slate-950 text-[9px] px-2 py-0.5 rounded shadow font-bold">Warna Terang VS Latar Gelap</div>
+                            </div>
+                            <div class="bg-indigo-100 rounded-xl p-2.5 text-center border border-indigo-200">
+                                <h4 class="text-xs font-bold text-indigo-800 uppercase mb-0.5">Contoh Kontras:</h4>
+                                <p class="text-xs text-indigo-900 leading-relaxed font-semibold">Merah lwn Hijau, Hitam lwn Putih, Kasar lwn Licin</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-indigo-700">
+                                <button class="hover:text-indigo-900 flex items-center gap-1 font-bold" onclick="speakText('Kontras. Perbezaan ketara antara unsur seni yang digunakan seperti warna terang dengan warna gelap.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-indigo-200 text-indigo-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 2</span>
+                                <button class="hover:text-indigo-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-indigo-300 pb-2 mb-3">Fakta Kontras 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Kontras</strong> wujud apabila terdapat unsur seni yang berlawanan atau berbeza sepenuhnya. Ia berfungsi untuk menarik perhatian dengan serta-merta!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-indigo-800 font-bold rounded-xl shadow hover:bg-indigo-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 9: PENEGASAN -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-red-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-red-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-red-400 via-rose-400 to-red-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-red-800 tracking-wide uppercase">PENEGASAN</h3>
+                                <span class="text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full">(EMPHASIS)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-red-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-red-100 border border-red-200 px-1.5 py-0.5 rounded shadow-sm text-red-800 font-bold animate-pulse">Ketuk kumbang merah! 🐞</div>
+                                <svg id="emphasis-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickEmphasis(event)">
+                                    <path d="M20,150 Q100,50 180,150 Q100,180 20,150 Z" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+                                    <line x1="20" y1="150" x2="180" y2="150" stroke="#15803d" stroke-width="2"/>
+                                    <circle cx="100" cy="135" r="22" fill="#ef4444" stroke="#000000" stroke-width="2"/>
+                                    <circle cx="92" cy="125" r="3" fill="#000000"/>
+                                    <circle cx="108" cy="125" r="3" fill="#000000"/>
+                                    <circle cx="90" cy="142" r="3" fill="#000000"/>
+                                    <circle cx="110" cy="142" r="3" fill="#000000"/>
+                                    <line x1="100" y1="113" x2="100" y2="157" stroke="#000000" stroke-width="2"/>
+                                    <ellipse cx="100" cy="111" rx="8" ry="6" fill="#000000"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[16%] bg-red-600 text-white text-[9px] px-2 py-0.5 rounded shadow font-bold">Kumbang Merah Menyerlah</div>
+                            </div>
+                            <div class="bg-red-100 rounded-xl p-2.5 text-center border border-red-200">
+                                <h4 class="text-xs font-bold text-red-800 uppercase mb-0.5">Tujuan Penegasan:</h4>
+                                <p class="text-xs text-red-900 leading-relaxed font-semibold">Mewujudkan pusat tumpuan (fokus) yang segera menarik perhatian.</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-red-700">
+                                <button class="hover:text-red-900 flex items-center gap-1 font-bold" onclick="speakText('Penegasan. Sesuatu yang menonjol dan berbeza daripada yang lain supaya menjadi tumpuan utama mata kita.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-red-200 text-red-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 3</span>
+                                <button class="hover:text-red-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-red-500 to-rose-600 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-red-300 pb-2 mb-3">Fakta Penegasan 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Penegasan</strong> berlaku apabila ada satu bahagian atau objek yang berbeza secara ketara, menjadikannya 'hero' dalam sesebuah karya seni!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-red-800 font-bold rounded-xl shadow hover:bg-red-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 10: HARMONI -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-sky-400">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-sky-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-sky-300 via-sky-400 to-sky-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-sky-800 tracking-wide uppercase">HARMONI</h3>
+                                <span class="text-xs font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full">(HARMONY)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-sky-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-sky-100 border border-sky-200 px-1.5 py-0.5 rounded shadow-sm text-sky-800">Rasai ketenangan ombak! 🌊</div>
+                                <svg id="harmony-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickHarmony(event)">
+                                    <path d="M 10,70 Q 50,50 100,70 T 190,70" fill="none" stroke="#0ea5e9" stroke-width="4" stroke-linecap="round"/>
+                                    <path d="M 10,100 Q 50,80 100,100 T 190,100" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+                                    <path d="M 10,130 Q 50,110 100,130 T 190,130" fill="none" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[23%] bg-sky-600 text-white text-[9px] px-2 py-0.5 rounded shadow font-bold">Ulangan Corak Selari</div>
+                            </div>
+                            <div class="bg-sky-100 rounded-xl p-2.5 text-center border border-sky-200">
+                                <h4 class="text-xs font-bold text-sky-800 uppercase mb-0.5">Kesan Harmoni:</h4>
+                                <p class="text-xs text-sky-900 leading-relaxed font-semibold">Mewujudkan suasana yang aman, tenteram, damai dan selesa dipandang.</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-sky-700">
+                                <button class="hover:text-sky-900 flex items-center gap-1 font-bold" onclick="speakText('Harmoni. Keselarasan gabungan unsur seni yang nampak sepadan dan mendamaikan jiwa.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-sky-200 text-sky-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 4</span>
+                                <button class="hover:text-sky-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-sky-400 to-blue-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-sky-300 pb-2 mb-3">Fakta Harmoni 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Harmoni</strong> dicapai melalui penyusunan unsur-unsur seni yang hampir serupa (seperti ton warna senada atau bentuk sekata) untuk menghasilkan ketenteraman visual.
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-sky-800 font-bold rounded-xl shadow hover:bg-sky-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 11: KEPELBAGAIAN (NEW!) -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-yellow-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-yellow-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-amber-800 tracking-wide uppercase">KEPELBAGAIAN</h3>
+                                <span class="text-xs font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full">(VARIETY)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-yellow-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-yellow-100 border border-yellow-200 px-1.5 py-0.5 rounded shadow-sm text-yellow-800">Ketuk pelbagai rupa! 🎨</div>
+                                <svg id="variety-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickVariety(event)">
+                                    <rect x="20" y="40" width="35" height="35" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+                                    <circle cx="150" cy="60" r="25" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+                                    <polygon points="100,120 70,170 130,170" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+                                    <path d="M 30,140 Q 50,110 70,140 T 110,140" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/>
+                                    <ellipse cx="150" cy="140" rx="20" ry="10" fill="#ec4899" stroke="#be185d" stroke-width="2"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[20%] bg-amber-500 text-white text-[9px] px-2 py-0.5 rounded shadow font-bold">Rupa & Warna Berbeza</div>
+                            </div>
+                            <div class="bg-yellow-100 rounded-xl p-2.5 text-center border border-yellow-200">
+                                <h4 class="text-xs font-bold text-yellow-800 uppercase mb-0.5">Kesan Kepelbagaian:</h4>
+                                <p class="text-xs text-yellow-900 leading-relaxed font-semibold">Menggabungkan pelbagai gaya untuk karya yang ceria dan bertenaga.</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-yellow-700">
+                                <button class="hover:text-yellow-900 flex items-center gap-1 font-bold" onclick="speakText('Kepelbagaian. Gabungan pelbagai bentuk, warna, dan garisan untuk mewujudkan suasana gembira dan menarik.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-yellow-200 text-yellow-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 5</span>
+                                <button class="hover:text-yellow-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-yellow-300 pb-2 mb-3">Fakta Kepelbagaian 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Kepelbagaian</strong> terhasil apabila kita menggunakan banyak jenis unsur seni (contohnya mencampur bentuk geometri dengan bentuk organik) supaya lukisan kita nampak aktif dan penuh kejutan!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-yellow-800 font-bold rounded-xl shadow hover:bg-yellow-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 12: KESATUAN (NEW!) -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-emerald-500">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-emerald-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-emerald-300 via-emerald-400 to-emerald-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-emerald-800 tracking-wide uppercase">KESATUAN</h3>
+                                <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">(UNITY)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-emerald-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded shadow-sm text-emerald-800">Lihat corak sekeluarga! 🤝</div>
+                                <svg id="unity-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickUnity(event)">
+                                    <circle cx="100" cy="100" r="60" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,5"/>
+                                    <polygon points="100,30 104,38 112,38 106,44 108,52 100,47 92,52 94,44 88,38 96,38" fill="#10b981"/>
+                                    <polygon points="150,60 154,68 162,68 156,74 158,82 150,77 142,82 144,74 138,68 146,68" fill="#10b981"/>
+                                    <polygon points="160,115 164,123 172,123 166,129 168,137 160,132 152,137 154,129 148,123 156,123" fill="#10b981"/>
+                                    <polygon points="120,160 124,168 132,168 126,174 128,182 120,177 112,182 114,174 108,168 116,168" fill="#10b981"/>
+                                    <polygon points="70,150 74,158 82,158 76,164 78,172 70,167 62,172 64,164 58,158 66,158" fill="#10b981"/>
+                                    <polygon points="40,95 44,103 52,103 46,109 48,117 40,112 32,117 34,109 28,103 36,103" fill="#10b981"/>
+                                    <circle cx="100" cy="100" r="20" fill="#facc15" stroke="#eab308" stroke-width="2"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[23%] bg-emerald-600 text-white text-[9px] px-2 py-0.5 rounded shadow font-bold">Satu Tema Seiras</div>
+                            </div>
+                            <div class="bg-emerald-100 rounded-xl p-2.5 text-center border border-emerald-200">
+                                <h4 class="text-xs font-bold text-emerald-800 uppercase mb-0.5">Kesan Kesatuan:</h4>
+                                <p class="text-xs text-emerald-900 leading-relaxed font-semibold">Menghasilkan susunan seni yang sekata, harmoni, dan erat bersama.</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-emerald-700">
+                                <button class="hover:text-emerald-900 flex items-center gap-1 font-bold" onclick="speakText('Kesatuan. Gabungan elemen yang mempunyai tema dan idea yang sama untuk membentuk rekaan yang lengkap.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 6</span>
+                                <button class="hover:text-emerald-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-emerald-300 pb-2 mb-3">Fakta Kesatuan 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Kesatuan</strong> dicapai apabila kesemua bahagian dalam rekaan bekerjasama secara padu untuk menyampaikan satu idea atau mesej. Karya akan kelihatan lengkap dan seimbang!
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-emerald-800 font-bold rounded-xl shadow hover:bg-emerald-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 13: IRAMA & PERGERAKAN (NEW!) -->
+                <div class="w-full max-w-[280px] h-[460px] perspective group cursor-pointer" onclick="handleCardClick(this, event)">
+                    <div class="relative w-full h-full preserve-3d shadow-xl rounded-3xl border-4 border-pink-400">
+                        <div class="absolute inset-0 w-full h-full backface-hidden bg-pink-50 rounded-[20px] p-4 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-pink-300 via-pink-400 to-pink-500"></div>
+                            <div class="text-center mt-2">
+                                <h3 class="text-2xl font-black text-pink-800 tracking-wide uppercase">IRAMA</h3>
+                                <span class="text-xs font-bold text-pink-600 bg-pink-100 px-3 py-1 rounded-full">(RHYTHM)</span>
+                            </div>
+                            <div class="relative flex justify-center items-center h-48 my-2 bg-white rounded-2xl border-2 border-dashed border-pink-200 shadow-inner overflow-hidden">
+                                <div class="absolute top-2 left-2 text-[10px] bg-pink-100 border border-pink-200 px-1.5 py-0.5 rounded shadow-sm text-pink-800">Lihat burung terbang! 🐦</div>
+                                <svg id="rhythm-svg" viewBox="0 0 200 200" class="w-40 h-40 cursor-pointer" onclick="clickRhythm(event)">
+                                    <path d="M20,150 Q60,80 120,120 T180,50" fill="none" stroke="#f0f9ff" stroke-width="12" stroke-linecap="round"/>
+                                    <!-- Bird 1 (Large - close) -->
+                                    <path d="M 50,110 Q 65,95 80,110 Q 65,115 50,110 Q 35,95 50,110" fill="#ec4899" transform="rotate(-15 50 110)"/>
+                                    <!-- Bird 2 (Medium) -->
+                                    <path d="M 100,90 Q 112,77 125,90 Q 112,94 100,90 Q 88,77 100,90" fill="#ec4899" transform="rotate(-10 100 90) scale(0.8 0.8) translate(20, 10)"/>
+                                    <!-- Bird 3 (Small - far) -->
+                                    <path d="M 140,65 Q 150,55 160,65 Q 150,68 140,65 Q 130,55 140,65" fill="#ec4899" transform="rotate(-5 140 65) scale(0.6 0.6) translate(80, 30)"/>
+                                </svg>
+                                <div class="absolute bottom-[10%] left-[20%] bg-pink-600 text-white text-[9px] px-2 py-0.5 rounded shadow font-bold">Ilusi Berpindah Tempat</div>
+                            </div>
+                            <div class="bg-pink-100 rounded-xl p-2.5 text-center border border-pink-200">
+                                <h4 class="text-xs font-bold text-pink-800 uppercase mb-0.5">Kesan Pergerakan:</h4>
+                                <p class="text-xs text-pink-900 leading-relaxed font-semibold">Mencipta kesan hidup, aktif, bergetar dan melompat.</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs mt-1 text-pink-700">
+                                <button class="hover:text-pink-900 flex items-center gap-1 font-bold" onclick="speakText('Irama dan Pergerakan. Kesan visual yang kelihatan hidup, mengalir, atau bergerak seperti ombak air atau kepak burung.', event)">
+                                    <i class="fa-solid fa-volume-high text-sm"></i> Sebut
+                                </button>
+                                <span class="bg-pink-200 text-pink-900 px-2 py-0.5 rounded-full text-[10px]">Prinsip 7</span>
+                                <button class="hover:text-pink-900 flex items-center gap-1 font-bold flip-btn">
+                                    Pusing <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-pink-400 to-rose-500 rounded-[20px] p-5 flex flex-col justify-between text-white">
+                            <div>
+                                <h4 class="font-bold border-b border-pink-300 pb-2 mb-3">Fakta Pergerakan 💡</h4>
+                                <p class="text-sm leading-relaxed mb-4">
+                                    <strong>Irama dan Pergerakan</strong> wujud apabila terdapat susunan elemen seni berulang secara konsisten untuk membimbing mata penonton menelusuri keseluruhan lukisan.
+                                </p>
+                            </div>
+                            <button class="w-full py-2 bg-white text-pink-800 font-bold rounded-xl shadow hover:bg-pink-50 transition-all flip-btn">Kembali ke Depan</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Tab 2: INTERACTIVE SANDBOX (CUBA SENDIRI) -->
+        <section id="tab-aktiviti" class="hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-800">Aktiviti Seni Kreatif 🎨</h2>
+                <p class="text-slate-600">Pilih satu menu permainan di bawah untuk mencuba sendiri unsur seni di atas skrin komputer atau telefon pintar anda!</p>
+            </div>
+
+            <!-- Activity Selectors -->
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="switchActivity('garisan')" id="act-btn-garisan" class="px-5 py-2.5 rounded-2xl font-bold shadow text-sm transition-all bg-yellow-400 text-slate-950 border-2 border-yellow-500 scale-105">
+                    <i class="fa-solid fa-signature"></i> Lukis Garisan
+                </button>
+                <button onclick="switchActivity('rupa')" id="act-btn-rupa" class="px-5 py-2.5 rounded-2xl font-bold shadow text-sm transition-all bg-white text-slate-700 hover:bg-orange-100">
+                    <i class="fa-solid fa-shapes"></i> Susun Rupa
+                </button>
+                <button onclick="switchActivity('jalinan')" id="act-btn-jalinan" class="px-5 py-2.5 rounded-2xl font-bold shadow text-sm transition-all bg-white text-slate-700 hover:bg-emerald-100">
+                    <i class="fa-solid fa-hand-pointer"></i> Sentuh Jalinan
+                </button>
+                <button onclick="switchActivity('warna')" id="act-btn-warna" class="px-5 py-2.5 rounded-2xl font-bold shadow text-sm transition-all bg-white text-slate-700 hover:bg-purple-100">
+                    <i class="fa-solid fa-fill-drip"></i> Bancuh Warna
+                </button>
+            </div>
+
+            <!-- ACTIVITY CONTAINERS -->
+            <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-slate-200 max-w-3xl mx-auto min-h-[400px] flex flex-col justify-between">
+                
+                <!-- Activity 1: Drawing Board for Lines -->
+                <div id="act-garisan" class="space-y-4 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold text-yellow-600"><i class="fa-solid fa-signature"></i> Melukis Garisan</h3>
+                            <button onclick="clearCanvas()" class="px-3 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-lg font-bold">
+                                <i class="fa-solid fa-trash"></i> Padam Semua
+                            </button>
+                        </div>
+                        <p class="text-xs text-slate-500">Pilih jenis garisan kegemaran anda dan lukis terus pada papan lakaran putih di bawah dengan tetikus atau jari!</p>
+                    </div>
+
+                    <!-- Brush Controls -->
+                    <div class="flex flex-wrap items-center gap-3 py-2">
+                        <span class="text-xs font-bold text-slate-700">Jenis Berus:</span>
+                        <button onclick="setBrush('tebal')" id="brush-tebal" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-900 text-white flex items-center gap-2">
+                            <span class="inline-block w-4 h-3 bg-white rounded"></span> Tebal
+                        </button>
+                        <button onclick="setBrush('nipis')" id="brush-nipis" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-800 flex items-center gap-2">
+                            <span class="inline-block w-4 h-0.5 bg-slate-800 rounded"></span> Nipis
+                        </button>
+                        <button onclick="setBrush('zigzag')" id="brush-zigzag" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Zigzag
+                        </button>
+                        <button onclick="setBrush('putus')" id="brush-putus" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-800 flex items-center gap-2">
+                            <span class="inline-block w-4 border-t-2 border-dashed border-slate-800"></span> Putus-Putus
+                        </button>
+                        
+                        <div class="flex items-center gap-2 ml-auto">
+                            <span class="text-xs font-bold">Warna:</span>
+                            <input type="color" id="brushColor" value="#ec4899" class="w-8 h-8 rounded-lg cursor-pointer border-0">
+                        </div>
+                    </div>
+
+                    <!-- Canvas -->
+                    <div class="border-4 border-dashed border-slate-200 rounded-2xl bg-slate-50 h-64 relative overflow-hidden cursor-crosshair">
+                        <canvas id="lineCanvas" class="absolute inset-0 w-full h-full"></canvas>
+                        <p id="canvas-prompt" class="absolute inset-0 flex items-center justify-center text-slate-400 pointer-events-none font-bold text-sm">Mula melukis di sini... ✏️</p>
+                    </div>
+                </div>
+
+                <!-- Activity 2: Shape Sorter / Puzzle -->
+                <div id="act-rupa" class="hidden space-y-4 flex-grow">
+                    <div>
+                        <h3 class="text-xl font-bold text-orange-600 mb-1"><i class="fa-solid fa-shapes"></i> Susun Rupa Geometri</h3>
+                        <p class="text-xs text-slate-500">Bina semula gambar rumah dengan menyusun semula bentuk-bentuk yang diberikan ke tapak sasaran!</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 items-center">
+                        <div class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 flex justify-center gap-4 flex-wrap">
+                            <div id="drag-roof" draggable="true" ondragstart="drag(event)" class="w-16 h-16 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing">
+                                <div class="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[50px] border-b-red-500"></div>
+                                <span class="text-[10px] font-bold mt-1 text-red-600">Atap</span>
+                            </div>
+                            <div id="drag-base" draggable="true" ondragstart="drag(event)" class="w-16 h-16 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing">
+                                <div class="w-12 h-12 bg-blue-500 rounded"></div>
+                                <span class="text-[10px] font-bold mt-1 text-blue-600">Dinding</span>
+                            </div>
+                            <div id="drag-sun" draggable="true" ondragstart="drag(event)" class="w-16 h-16 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing">
+                                <div class="w-12 h-12 bg-yellow-400 rounded-full"></div>
+                                <span class="text-[10px] font-bold mt-1 text-yellow-600">Matahari</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-b from-sky-100 to-indigo-100 rounded-2xl h-52 relative border-2 border-sky-200 overflow-hidden flex items-center justify-center">
+                            <div id="puzzle-guide" class="absolute top-2 left-2 text-[10px] bg-sky-200 bg-opacity-70 text-sky-900 px-2 py-0.5 rounded font-bold">Heret bentuk ke bayangannya!</div>
+                            
+                            <div id="target-sun" ondragover="allowDrop(event)" ondrop="drop(event, 'drag-sun')" class="absolute top-4 left-6 w-12 h-12 rounded-full border-2 border-dashed border-slate-400 bg-slate-300 bg-opacity-20 flex items-center justify-center text-xs text-slate-500 font-bold">Matahari</div>
+                            <div id="target-base" ondragover="allowDrop(event)" ondrop="drop(event, 'drag-base')" class="absolute bottom-4 left-24 w-16 h-16 border-2 border-dashed border-slate-400 bg-slate-300 bg-opacity-20 flex items-center justify-center text-xs text-slate-500 font-bold">Dinding</div>
+                            <div id="target-roof" ondragover="allowDrop(event)" ondrop="drop(event, 'drag-roof')" class="absolute bottom-20 left-24 w-16 h-12 border-2 border-dashed border-slate-400 bg-slate-300 bg-opacity-20 flex items-center justify-center text-xs text-slate-500 font-bold" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);">Atap</div>
+                            
+                            <div id="puzzle-win" class="hidden absolute inset-0 bg-emerald-500 bg-opacity-95 flex flex-col items-center justify-center text-white p-4 text-center z-10 transition-all">
+                                <i class="fa-solid fa-circle-check text-4xl mb-2 animate-bounce"></i>
+                                <h4 class="text-lg font-bold">Syabas! Anda Hebat! 🎉</h4>
+                                <p class="text-xs">Berjaya membina rupa rumah geometri dengan sempurna!</p>
+                                <button onclick="resetPuzzle()" class="mt-3 px-4 py-1.5 bg-white text-emerald-800 rounded-xl text-xs font-bold shadow hover:bg-slate-100">Main Semula</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity 3: Pet Animals for Texture -->
+                <div id="act-jalinan" class="hidden space-y-4 flex-grow">
+                    <div>
+                        <h3 class="text-xl font-bold text-emerald-600 mb-1"><i class="fa-solid fa-hand-pointer"></i> Sentuh Jalinan Haiwan</h3>
+                        <p class="text-xs text-slate-500">Gunakan jari atau tetikus anda untuk menyentuh permukaan bulu Arnab atau cengkerang Kura-kura di bawah.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-6 text-center">
+                        <div class="bg-gradient-to-br from-slate-50 to-amber-50 p-6 rounded-2xl border-2 border-amber-200 flex flex-col items-center justify-between cursor-pointer group" onclick="simulatePet('arnab')">
+                            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md border-2 border-slate-100 relative overflow-hidden">
+                                <span class="text-5xl group-hover:scale-110 transition-transform">🐰</span>
+                                <div id="pet-effect-arnab" class="absolute inset-0 bg-pink-400 bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity pointer-events-none">
+                                    <span class="text-pink-600 text-xs font-bold">Lembut ✨</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="font-bold text-amber-800">Arnab (Bulu Lembut)</h4>
+                                <span class="inline-block mt-2 bg-pink-100 text-pink-700 font-bold text-xs px-3 py-1 rounded-full"><i class="fa-solid fa-paw"></i> Jalinan Sentuh</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-slate-50 to-emerald-50 p-6 rounded-2xl border-2 border-emerald-200 flex flex-col items-center justify-between cursor-pointer group" onclick="simulatePet('kura')">
+                            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md border-2 border-slate-100 relative overflow-hidden">
+                                <span class="text-5xl group-hover:scale-110 transition-transform">🐢</span>
+                                <div id="pet-effect-kura" class="absolute inset-0 bg-emerald-400 bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity pointer-events-none">
+                                    <span class="text-emerald-800 text-xs font-bold">Kasar & Keras 🧱</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="font-bold text-emerald-800">Kura-kura (Cengkerang Kasar)</h4>
+                                <span class="inline-block mt-2 bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full"><i class="fa-solid fa-shield-halved"></i> Jalinan Tampak</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity 4: Mixing Primary Colors -->
+                <div id="act-warna" class="hidden space-y-4 flex-grow">
+                    <div>
+                        <h3 class="text-xl font-bold text-purple-600 mb-1"><i class="fa-solid fa-fill-drip"></i> Eksperimen Campuran Warna</h3>
+                        <p class="text-xs text-slate-500">Pilih dua warna primer untuk dimasukkan ke dalam tiub uji, kemudian tekan butang goncang untuk menghasilkan warna sekunder!</p>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-6 py-4">
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center space-y-1">
+                                <span class="text-[10px] font-bold text-slate-500">Warna Pertama</span>
+                                <div class="flex gap-2">
+                                    <button onclick="selectMixColor(1, 'merah', '#ef4444')" id="mix1-merah" class="w-10 h-10 rounded-full bg-red-500 border-4 border-slate-300 transition-all"></button>
+                                    <button onclick="selectMixColor(1, 'kuning', '#facc15')" id="mix1-kuning" class="w-10 h-10 rounded-full bg-yellow-400 border-4 border-white transition-all"></button>
+                                    <button onclick="selectMixColor(1, 'biru', '#3b82f6')" id="mix1-biru" class="w-10 h-10 rounded-full bg-blue-500 border-4 border-white transition-all"></button>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-xl font-black text-slate-400">+</div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <span class="text-[10px] font-bold text-slate-500">Warna Kedua</span>
+                                <div class="flex gap-2">
+                                    <button onclick="selectMixColor(2, 'merah', '#ef4444')" id="mix2-merah" class="w-10 h-10 rounded-full bg-red-500 border-4 border-white transition-all"></button>
+                                    <button onclick="selectMixColor(2, 'kuning', '#facc15')" id="mix2-kuning" class="w-10 h-10 rounded-full bg-yellow-400 border-4 border-slate-300 transition-all"></button>
+                                    <button onclick="selectMixColor(2, 'biru', '#3b82f6')" id="mix2-biru" class="w-10 h-10 rounded-full bg-blue-500 border-4 border-white transition-all"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-8 bg-slate-50 px-6 py-4 rounded-3xl border-2 border-slate-100 w-full justify-center">
+                            <div class="relative w-28 h-32 flex items-end justify-center">
+                                <svg viewBox="0 0 100 120" class="w-20 h-28 overflow-visible">
+                                    <path d="M 30 10 L 30 30 Q 15 110 50 110 Q 85 110 70 30 L 70 10" fill="none" stroke="#64748b" stroke-width="3" stroke-linecap="round"/>
+                                    <ellipse cx="50" cy="10" rx="20" ry="4" fill="none" stroke="#64748b" stroke-width="3"/>
+                                    <path id="beaker-liquid" d="M 23 80 Q 50 85 77 80 L 73 100 Q 50 108 27 100 Z" fill="#b91c1c" opacity="0.8" class="transition-all duration-500"/>
+                                </svg>
+                                <div id="shake-overlay" class="hidden absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 rounded-2xl">
+                                    <span class="text-xl font-black animate-bounce text-purple-600">MENGGONCANG... 🧪💥</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <h5 class="text-xs font-bold text-slate-500">Hasil Campuran:</h5>
+                                <div id="mix-result-box" class="px-4 py-2 bg-red-100 text-red-800 rounded-xl font-black text-center min-w-[120px] transition-all">MERAH</div>
+                                <span class="block text-[10px] text-slate-400 italic mt-1 text-center" id="mix-category">Kategori: Warna Primer</span>
+                            </div>
+                        </div>
+
+                        <button onclick="triggerMix()" class="px-6 py-2 bg-purple-600 text-white font-bold rounded-xl shadow hover:bg-purple-700 transition-all text-sm">
+                            <i class="fa-solid fa-flask"></i> Campur Sekarang!
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Tab 3: KUIZ SENI (GAME) -->
+        <section id="tab-kuiz" class="hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-800">Kuiz Seni Pintar ⭐</h2>
+                <p class="text-slate-600">Selesaikan soalan-soalan berikut untuk membuktikan anda pakar dalam Bahasa Seni Visual!</p>
+            </div>
+
+            <!-- Quiz Main Panel -->
+            <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-emerald-400 max-w-xl mx-auto">
+                <!-- Welcome/Start Screen -->
+                <div id="quiz-start-screen" class="space-y-6 text-center py-6">
+                    <div class="text-5xl animate-bounce">🏆</div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-black text-slate-800">Adakah anda bersedia?</h3>
+                        <p class="text-sm text-slate-600">Ada 12 soalan menarik merangkumi Unsur Seni & Prinsip Rekaan. Dapatkan semua bintang!</p>
+                    </div>
+                    <button onclick="startQuiz()" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold rounded-2xl shadow-lg hover:from-emerald-600 hover:to-teal-600 transition-all transform hover:scale-105">
+                        Mula Kuiz Sekarang
+                    </button>
+                </div>
+
+                <!-- Active Question Screen -->
+                <div id="quiz-active-screen" class="hidden space-y-6">
+                    <!-- Progress Bar -->
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500">
+                        <span>Soalan <span id="current-q-index">1</span> daripada 12</span>
+                        <div class="flex gap-0.5" id="star-score-container">
+                            <!-- Dynamically generated stars -->
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div id="quiz-progress" class="bg-emerald-500 h-full w-1/12 transition-all"></div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div class="space-y-4">
+                        <div id="question-visual" class="h-32 bg-slate-50 rounded-2xl flex items-center justify-center p-4 border border-slate-100 text-4xl">
+                            <!-- Injected dynamically -->
+                        </div>
+                        <h4 id="question-text" class="text-md sm:text-lg font-black text-slate-800 text-center">
+                            Sila tunggu... Soalan sedang dimuatkan.
+                        </h4>
+                    </div>
+
+                    <!-- Multiple Choice Options -->
+                    <div class="grid grid-cols-1 gap-3" id="quiz-options-container">
+                        <!-- Buttons injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Results / Certificate Screen -->
+                <div id="quiz-result-screen" class="hidden text-center space-y-6 py-6 relative">
+                    <canvas id="confetti-canvas" class="absolute inset-0 pointer-events-none w-full h-full z-20"></canvas>
+                    
+                    <div class="space-y-2">
+                        <div class="text-5xl">🎉</div>
+                        <h3 class="text-2xl font-black text-slate-800">Tahniah! Anda Selesai!</h3>
+                        <p class="text-sm text-slate-600">Berikut ialah markah pencapaian seni anda:</p>
+                    </div>
+
+                    <!-- Badge/Score -->
+                    <div class="bg-yellow-50 max-w-xs mx-auto p-4 rounded-3xl border-4 border-yellow-400 space-y-2">
+                        <span class="text-xs font-bold text-yellow-600 tracking-wider block uppercase">Skor Kejayaan</span>
+                        <div class="text-4xl font-extrabold text-slate-800"><span id="correct-count">0</span> / 12</div>
+                        <div class="flex justify-center gap-0.5 text-lg text-yellow-400 flex-wrap max-w-[240px] mx-auto" id="final-stars">
+                            <!-- Injected stars -->
+                        </div>
+                    </div>
+
+                    <!-- Digital Certificate -->
+                    <div class="border-2 border-dashed border-slate-300 p-4 rounded-xl max-w-sm mx-auto text-left space-y-3 bg-white shadow-inner">
+                        <div class="text-center border-b pb-2">
+                            <span class="text-xs uppercase tracking-wider font-extrabold text-slate-400">SIJIL PENGHARGAAN DIGITAL</span>
+                        </div>
+                        <p class="text-xs text-slate-600 text-center leading-relaxed">
+                            Sijil ini diberikan dengan bangganya kepada pengguna kerana telah berjaya memahami dan menyelesaikan cabaran <strong class="text-slate-800">Bahasa Seni Visual KSSR Tahun 2</strong> dengan cemerlang!
+                        </p>
+                        <div class="flex justify-between items-end text-[10px] text-slate-400 pt-2">
+                            <span>Tarikh: <span id="current-date"></span></span>
+                            <span class="font-bold border-t border-slate-400 pt-1 text-right">CIKGU LUKIS 🧑‍🎨</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 justify-center">
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-slate-200 text-slate-800 font-bold rounded-xl shadow hover:bg-slate-300 transition-all text-xs">
+                            Cuba Lagi 🔄
+                        </button>
+                        <button onclick="changeTab('belajar')" class="px-6 py-2 bg-emerald-500 text-white font-bold rounded-xl shadow hover:bg-emerald-600 transition-all text-xs">
+                            Balik Belajar 📚
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-white py-6 border-t-4 border-pink-500">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-400">
+            <div>
+                <p class="font-bold text-slate-200 text-sm">Aplikasi Pendidikan Seni Visual Sekolah Rendah</p>
+                <p class="mt-1">Sesuai digunakan oleh Guru, Ibu bapa, & Murid-murid Sekolah Rendah di Malaysia.</p>
+            </div>
+            <div class="flex gap-4 items-center">
+                <span class="bg-pink-600 text-white px-3 py-1 rounded-full font-bold">KSSR Semakan</span>
+                <span class="text-slate-500">|</span>
+                <span>Kemudahan Belajar Abad Ke-21</span>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- Sistem Navigasi -->
-    <div class="controls">
-        <button class="nav-btn" id="btnPrev" onclick="navigateCard(-1)">◀ Balik</button>
-        <div class="counter" id="displayCounter">1 / 6</div>
-        <button class="nav-btn" id="btnNext" onclick="navigateCard(1)">Seterusnya ▶</button>
-    </div>
-
+    <!-- LOGIC SCRIPT -->
     <script>
-        // DATASET LENGKAP
-        const masterDataset = [
-            // --- 1. UNSUR SENI ---
-            { 
-                title: "Garisan", 
-                category: "Unsur Seni", 
-                desc: "Kesan titik yang bergerak di atas sesuatu permukaan. Ia merupakan bermulanya penghasilan rupa dan bentuk (contoh: garisan tebal, putus-putus, beralun)." 
-            },
-            { 
-                title: "Rupa", 
-                category: "Unsur Seni", 
-                desc: "Kawasan rata dikelilingi garisan luar (2D, tiada isi padu).<br><br><b>1. Rupa Geometri:</b> Mempunyai sudut, garisan tepat, formal & diukur dengan alat matematik. (Contoh: Segi empat, segitiga, bulatan, trapezium).<br><br><b>2. Rupa Organik:</b> Bebas, tidak sekata, spontan & meniru alam semula jadi. (Contoh: Daun, bunga, titisan air, awan)." 
-            },
-            { 
-                title: "Bentuk", 
-                category: "Unsur Seni", 
-                desc: "<b>1. Elemen 2D (Dua Dimensi):</b> Objek rata. Hanya mempunyai dua ukuran dimensi (panjang/lebar dan tinggi). Tiada ketebalan, tiada isi padu, tidak mengambil ruang fizikal & dilihat dari satu arah. (Contoh: Lukisan, gambar foto, bayang-bayang).<br><br><b>2. Elemen 3D (Tiga Dimensi):</b> Mempunyai tiga ukuran (panjang, tinggi, lebar/kedalaman). Mempunyai isi padu, berat, struktur fizikal & boleh dilihat/disentuh dari pelbagai sudut. (Contoh: Kotak hadiah, bola, tin)." 
-            },
-            { 
-                title: "Jalinan", 
-                category: "Unsur Seni", 
-                desc: "<b>1. Jalinan Sentuh:</b> Jalinan yang boleh dirasai melalui sentuhan tangan dan dilihat secara visual. Mempunyai struktur nyata, timbul, kasar, licin, atau berduri secara fizikal. (Contoh: Kulit durian, kulit pokok kasar, bulu kucing, kain tuala, arca, kolaj, tembikar).<br><br><b>2. Jalinan Tampak:</b> Jalinan yang hanya boleh dilihat tetapi tidak dapat dirasai apabila disentuh (fizikal rata dan licin). Wujud sebagai ilusi, kesan gambar, atau lukisan 2D sahaja. (Contoh: Corak sayap rama-rama, belang harimau, kertas dinding corak batu bata)." 
-            },
-            { 
-                title: "Ruang", 
-                category: "Unsur Seni", 
-                desc: "Kawasan kosong yang terdapat di sekeliling, di dalam, atau di antara objek. Terbahagi kepada ruang nyata (fizikal) dan ruang ilusi (dalam lukisan)." 
-            },
-            { 
-                title: "Warna", 
-                category: "Unsur Seni", 
-                desc: "Kesan cahaya yang dipantulkan ke mata kita. Terbahagi kepada warna asas (merah, biru, kuning), warna sekunder, dan warna tertier." 
-            },
+        // Toggle Sub Category tabs between Unsur Seni and Prinsip Rekaan
+        function toggleSubCategory(category) {
+            const gridUnsur = document.getElementById('grid-unsur');
+            const gridPrinsip = document.getElementById('grid-prinsip');
+            const btnUnsur = document.getElementById('subtab-unsur');
+            const btnPrinsip = document.getElementById('subtab-prinsip');
+
+            if (category === 'unsur') {
+                gridUnsur.classList.remove('hidden');
+                gridPrinsip.classList.add('hidden');
+                btnUnsur.className = "px-6 py-2.5 rounded-2xl font-bold text-sm shadow-md transition-all bg-pink-500 text-white border-2 border-pink-600 scale-105";
+                btnPrinsip.className = "px-6 py-2.5 rounded-2xl font-bold text-sm shadow-md transition-all bg-white text-slate-700 hover:bg-purple-100 border-2 border-transparent";
+            } else {
+                gridUnsur.classList.add('hidden');
+                gridPrinsip.classList.remove('hidden');
+                btnUnsur.className = "px-6 py-2.5 rounded-2xl font-bold text-sm shadow-md transition-all bg-white text-slate-700 hover:bg-purple-100 border-2 border-transparent";
+                btnPrinsip.className = "px-6 py-2.5 rounded-2xl font-bold text-sm shadow-md transition-all bg-purple-600 text-white border-2 border-purple-700 scale-105";
+            }
+            playAudioPop();
+        }
+
+        // Tab switching controller
+        function changeTab(tabName) {
+            document.getElementById('tab-belajar').classList.add('hidden');
+            document.getElementById('tab-aktiviti').classList.add('hidden');
+            document.getElementById('tab-kuiz').classList.add('hidden');
             
-            // --- 2. PRINSIP REKAAN ---
-            { title: "Harmoni", category: "Prinsip Rekaan", desc: "Wujud apabila unsur-unsur seni yang digunakan mempunyai tema atau ciri-ciri yang hampir sama, sekaligus memberikan rasa tenteram dan selesa." },
-            { title: "Kontras", category: "Prinsip Rekaan", desc: "Terhasil apabila dua unsur seni yang digunakan saling bercanggah atau berbeza sama sekali (contoh: warna hitam lwn putih, bentuk besar lwn kecil). Ia berfungsi untuk menarik perhatian." },
-            { title: "Penegasan", category: "Prinsip Rekaan", desc: "Titik fokus atau elemen utama yang paling menyerlah dalam sesebuah karya untuk menarik pandangan mata penonton." },
-            { title: "Imbangan", category: "Prinsip Rekaan", desc: "Keadaan kesamaan atau kesepadanan dari segi berat, tarikan, dan tumpuan dalam sesebuah gubahan. Boleh jadi imbangan simetri atau tidak simetri." },
-            { title: "Irama & Pergerakan", category: "Prinsip Rekaan", desc: "Kesan dinamik yang diwujudkan melalui pengulangan unsur-unsur seni secara berterusan, membuatkan karya kelihatan seolah-olah 'hidup' atau bergerak." },
-            { title: "Kepelbagaian", category: "Prinsip Rekaan", desc: "Penggunaan pelbagai unsur seni, gaya, dan teknik dalam satu karya untuk mengelakkan rasa bosan dan menjadikan karya lebih menarik." },
-            { title: "Kesatuan", category: "Prinsip Rekaan", desc: "Hubungan gabungan antara unsur seni dan prinsip rekaan yang disusun dengan baik bagi melahirkan satu tema atau idea yang lengkap dan sempurna." }
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            const buttons = {
+                belajar: document.getElementById('btn-belajar'),
+                aktiviti: document.getElementById('btn-aktiviti'),
+                kuiz: document.getElementById('btn-kuiz')
+            };
+
+            for (const key in buttons) {
+                if (key === tabName) {
+                    buttons[key].className = `px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all bg-white text-pink-600 shadow-sm`;
+                } else {
+                    buttons[key].className = `px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all text-slate-600 hover:text-slate-800`;
+                }
+            }
+
+            if (tabName === 'aktiviti') {
+                setTimeout(resizeCanvas, 100);
+            }
+        }
+
+        // Card flip handler
+        function handleCardClick(cardElement, event) {
+            if (event.target.closest('button') || event.target.closest('div[onclick]') || event.target.closest('circle[onclick]') || event.target.closest('polygon[onclick]') || event.target.closest('rect[onclick]') || event.target.closest('path[onclick]') || event.target.closest('g[onclick]') || event.target.closest('svg[onclick]')) {
+                return;
+            }
+            const preserve3dEl = cardElement.querySelector('.preserve-3d');
+            preserve3dEl.classList.toggle('flip-active');
+            playAudioPop();
+        }
+
+        // Attach event listener specifically to standard "pusing" buttons inside card
+        document.querySelectorAll('.flip-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.perspective');
+                const preserve3dEl = card.querySelector('.preserve-3d');
+                preserve3dEl.classList.toggle('flip-active');
+                playAudioPop();
+            });
+        });
+
+        // ------------------ WEB AUDIO API (NO ASSET DEPENDENCY SFX) ------------------
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playAudioPop() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+                
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            } catch(e) {}
+        }
+
+        function playChimeSuccess() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C major chord
+                notes.forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.08));
+                    
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime + (index * 0.08));
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (index * 0.08) + 0.3);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(audioCtx.currentTime + (index * 0.08));
+                    osc.stop(audioCtx.currentTime + (index * 0.08) + 0.3);
+                });
+            } catch(e) {}
+        }
+
+        function playFailSound() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+                
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        function playScratchSound() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch(e) {}
+        }
+
+        // TEXT-TO-SPEECH READING SUPPORT
+        function speakText(text, event) {
+            if (event) event.stopPropagation();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ms-MY';
+                utterance.rate = 0.95;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // ------------------ INTERACTIVE HANDLERS FOR PRINSIP REKAAN ------------------
+        function clickForm(formType, event) {
+            if (event) event.stopPropagation();
+            speakText(`Ini bentuk tiga dimensi iaitu ${formType}!`);
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickSpace(area, event) {
+            if (event) event.stopPropagation();
+            if (area === 'depan') {
+                speakText("Bahagian depan dipanggil Ruang Hadapan. Objek nampak lebih besar!");
+            } else {
+                speakText("Bahagian belakang dipanggil Ruang Belakang. Objek nampak kecil!");
+            }
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickBalance(event) {
+            if (event) event.stopPropagation();
+            speakText("Kedua-dua belah kepak rama-rama ini sama serupa. Ini dipanggil Imbangan Simetri!");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickContrast(event) {
+            if (event) event.stopPropagation();
+            speakText("Warna bintang kuning sangat terang dan menyerlah di atas latar belakang yang gelap. Ini prinsip Kontras!");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickEmphasis(event) {
+            if (event) event.stopPropagation();
+            speakText("Kumbang kura-kura yang berwarna merah cerah ini menjadi pusat tumpuan di atas daun hijau. Ini prinsip Penegasan!");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickHarmony(event) {
+            if (event) event.stopPropagation();
+            speakText("Alunan garisan dan gabungan warna ombak yang hampir serupa menghasilkan prinsip Harmoni.");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickVariety(event) {
+            if (event) event.stopPropagation();
+            speakText("Kepelbagaian! Memasukkan pelbagai rupa geometri dan warna-warni berbeza untuk menghidupkan karya seni.");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickUnity(event) {
+            if (event) event.stopPropagation();
+            speakText("Kesatuan! Bintang-bintang berwarna hijau ini berbaris membina sebuah bulatan bertema seragam.");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        function clickRhythm(event) {
+            if (event) event.stopPropagation();
+            speakText("Irama dan Pergerakan! Burung-burung terbang secara berulang dari dekat membawa ke jauh.");
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        // ------------------ CARD 1: GARISAN ------------------
+        function playLineAudio(lineType, event) {
+            if (event) event.stopPropagation();
+            let label = "";
+            if (lineType === 'melengkung') label = "Ini garisan melengkung!";
+            if (lineType === 'zigzag') label = "Ini garisan zigzag! Naik dan turun.";
+            speakText(label);
+            createSparks(event.clientX, event.clientY);
+        }
+
+        function highlightLine(type, event) {
+            if (event) event.stopPropagation();
+            const catSvg = document.getElementById('cat-svg');
+            let speakMsg = "";
+            
+            if (type === 'tebal') {
+                speakMsg = "Garisan tebal!";
+                const tail = catSvg.querySelector('path');
+                tail.setAttribute('stroke', '#ea580c');
+                setTimeout(() => tail.setAttribute('stroke', '#f59e0b'), 1000);
+            } else if (type === 'nipis') {
+                speakMsg = "Garisan nipis!";
+                const whiskers = catSvg.querySelectorAll('line');
+                whiskers.forEach(w => w.setAttribute('stroke-width', '3'));
+                setTimeout(() => whiskers.forEach(w => w.setAttribute('stroke-width', '1.5')), 1000);
+            } else if (type === 'melengkung') {
+                speakMsg = "Garisan melengkung!";
+                const curved = catSvg.querySelector('path[stroke="#ec4899"]');
+                curved.setAttribute('stroke-width', '6');
+                setTimeout(() => curved.setAttribute('stroke-width', '3'), 1000);
+            } else if (type === 'zigzag') {
+                speakMsg = "Garisan zigzag!";
+                const zigzag = catSvg.querySelector('path[stroke="#3b82f6"]');
+                zigzag.setAttribute('stroke-width', '6');
+                setTimeout(() => zigzag.setAttribute('stroke-width', '3'), 1000);
+            }
+            speakText(speakMsg);
+            createSparks(event.clientX, event.clientY);
+        }
+
+        // Sparkle generator on click
+        function createSparks(x, y) {
+            if (!x || !y) return;
+            const spark = document.createElement('div');
+            spark.className = 'fixed text-yellow-400 font-extrabold text-xl pointer-events-none z-50 sparkle-effect';
+            spark.innerHTML = '★';
+            spark.style.left = `${x - 10}px`;
+            spark.style.top = `${y - 15}px`;
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 800);
+        }
+
+        // ------------------ CARD 2: RUPA ------------------
+        function highlightShape(shapeType, event) {
+            if (event) event.stopPropagation();
+            let speakMsg = "";
+            const svg = document.getElementById('shape-svg');
+            
+            if (shapeType === 'bulatan') {
+                speakMsg = "Bulatan. Rupa bulatan di matahari!";
+                const sun = svg.querySelector('circle[fill="#fcd34d"]');
+                sun.setAttribute('fill', '#f59e0b');
+                setTimeout(() => sun.setAttribute('fill', '#fcd34d'), 600);
+            } else if (shapeType === 'segitiga') {
+                speakMsg = "Segi Tiga. Rupa segi tiga pada atap rumah!";
+                const roof = svg.querySelector('polygon[fill="#ef4444"]');
+                roof.setAttribute('fill', '#dc2626');
+                setTimeout(() => roof.setAttribute('fill', '#ef4444'), 600);
+            } else if (shapeType === 'segiempat') {
+                speakMsg = "Segiempat. Rupa segiempat pada dinding rumah!";
+                const wall = svg.querySelector('rect[fill="#3b82f6"]');
+                wall.setAttribute('fill', '#2563eb');
+                setTimeout(() => wall.setAttribute('fill', '#3b82f6'), 600);
+            } else if (shapeType === 'organik') {
+                speakMsg = "Rupa Organik. Rupa pokok bebas berbentuk organik!";
+                const tree = svg.querySelector('path[fill="#22c55e"]');
+                tree.setAttribute('fill', '#16a34a');
+                setTimeout(() => tree.setAttribute('fill', '#22c55e'), 600);
+            }
+            
+            speakText(speakMsg);
+            createSparks(event.clientX, event.clientY);
+        }
+
+        // ------------------ CARD 3: JALINAN ------------------
+        function petAnimal(animal, event) {
+            if (event) event.stopPropagation();
+            let msg = "";
+            if (animal === 'arnab') {
+                msg = "Arnab mempunyai jalinan sentuh yang lembut!";
+                playChimeSuccess();
+            } else {
+                msg = "Kura-kura mempunyai jalinan tampak yang keras dan kulit yang kasar!";
+                playAudioPop();
+            }
+            speakText(msg);
+            createSparks(event.clientX, event.clientY);
+        }
+
+        // ------------------ CARD 4: WARNA ------------------
+        function wheelClick(colorInfo, event) {
+            if (event) event.stopPropagation();
+            speakText(colorInfo);
+            createSparks(event.clientX, event.clientY);
+            playAudioPop();
+        }
+
+        // ================== TAB 2: AKTIVITI (SANDBOX) LOGIC ==================
+        function switchActivity(actId) {
+            document.getElementById('act-garisan').classList.add('hidden');
+            document.getElementById('act-rupa').classList.add('hidden');
+            document.getElementById('act-jalinan').classList.add('hidden');
+            document.getElementById('act-warna').classList.add('hidden');
+
+            document.getElementById(`act-${actId}`).classList.remove('hidden');
+
+            const buttons = {
+                garisan: document.getElementById('act-btn-garisan'),
+                rupa: document.getElementById('act-btn-rupa'),
+                jalinan: document.getElementById('act-btn-jalinan'),
+                warna: document.getElementById('act-btn-warna')
+            };
+
+            for (const key in buttons) {
+                if (key === actId) {
+                    buttons[key].className = `px-5 py-2.5 rounded-2xl font-bold shadow text-sm transition-all bg-${key === 'garisan' ? 'yellow-400' : key === 'rupa' ? 'orange-500 text-white' : key === 'jalinan' ? 'emerald-500 text-white' : 'purple-600 text-white'} scale-105`;
+                } else {
+                    buttons[key].className = `px-5 py-2.5 rounded-2xl font-bold shadow text-sm transition-all bg-white text-slate-700 hover:bg-slate-100`;
+                }
+            }
+
+            if (actId === 'garisan') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        // ------------------ SUB ACTIVE 1: LINE CANVAS ------------------
+        const canvas = document.getElementById('lineCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let currentBrush = 'tebal';
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            clearCanvas();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function clearCanvas() {
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('canvas-prompt').style.opacity = '1';
+        }
+
+        function setBrush(style) {
+            currentBrush = style;
+            const brushes = ['tebal', 'nipis', 'zigzag', 'putus'];
+            brushes.forEach(b => {
+                const el = document.getElementById(`brush-${b}`);
+                if (b === style) {
+                    el.className = `px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-900 text-white flex items-center gap-2`;
+                } else {
+                    el.className = `px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-800 flex items-center gap-2`;
+                }
+            });
+            playAudioPop();
+        }
+
+        function startDrawing(e) {
+            drawing = true;
+            document.getElementById('canvas-prompt').style.opacity = '0';
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX || e.touches[0].clientX;
+            const y = e.clientY || e.touches[0].clientY;
+            lastX = x - rect.left;
+            lastY = y - rect.top;
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+            const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+            
+            const brushColor = document.getElementById('brushColor').value;
+            ctx.strokeStyle = brushColor;
+
+            if (currentBrush === 'tebal') {
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            } else if (currentBrush === 'nipis') {
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            } else if (currentBrush === 'zigzag') {
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                const midX = (lastX + x) / 2;
+                const midY = (lastY + y) / 2;
+                const dist = Math.hypot(x - lastX, y - lastY);
+                const perpX = -(y - lastY) / dist * 10;
+                const perpY = (x - lastX) / dist * 10;
+                ctx.lineTo(midX + perpX, midY + perpY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            } else if (currentBrush === 'putus') {
+                ctx.lineWidth = 4;
+                ctx.setLineDash([5, 10]);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            playScratchSound();
+            lastX = x;
+            lastY = y;
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', (e) => {
+            startDrawing(e);
+            e.preventDefault();
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            draw(e);
+            e.preventDefault();
+        });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // ------------------ SUB ACTIVE 2: PUZZLE (RUPA) ------------------
+        let solvedParts = { 'drag-roof': false, 'drag-base': false, 'drag-sun': false };
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev, correctId) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            if (data === correctId) {
+                const element = document.getElementById(data);
+                ev.target.innerHTML = "";
+                ev.target.appendChild(element);
+                ev.target.classList.remove('border-dashed', 'border-slate-400', 'bg-opacity-20');
+                ev.target.classList.add('border-solid', 'border-emerald-500', 'bg-emerald-100', 'bg-opacity-40');
+                
+                solvedParts[data] = true;
+                playChimeSuccess();
+                speakText("Tepat sekali!");
+                
+                checkPuzzleSolved();
+            } else {
+                playFailSound();
+                speakText("Alamak, salah tapak! Cuba cari bayangan yang sama.");
+            }
+        }
+
+        function checkPuzzleSolved() {
+            if (solvedParts['drag-roof'] && solvedParts['drag-base'] && solvedParts['drag-sun']) {
+                setTimeout(() => {
+                    document.getElementById('puzzle-win').classList.remove('hidden');
+                    playChimeSuccess();
+                }, 500);
+            }
+        }
+
+        function resetPuzzle() {
+            document.getElementById('puzzle-win').classList.add('hidden');
+            
+            const sunTarget = document.getElementById('target-sun');
+            sunTarget.innerHTML = "Matahari";
+            sunTarget.className = "absolute top-4 left-6 w-12 h-12 rounded-full border-2 border-dashed border-slate-400 bg-slate-300 bg-opacity-20 flex items-center justify-center text-xs text-slate-500 font-bold";
+
+            const baseTarget = document.getElementById('target-base');
+            baseTarget.innerHTML = "Dinding";
+            baseTarget.className = "absolute bottom-4 left-24 w-16 h-16 border-2 border-dashed border-slate-400 bg-slate-300 bg-opacity-20 flex items-center justify-center text-xs text-slate-500 font-bold";
+
+            const roofTarget = document.getElementById('target-roof');
+            roofTarget.innerHTML = "Atap";
+            roofTarget.className = "absolute bottom-20 left-24 w-16 h-12 border-2 border-dashed border-slate-400 bg-slate-300 bg-opacity-20 flex items-center justify-center text-xs text-slate-500 font-bold";
+            roofTarget.style.clipPath = "polygon(50% 0%, 0% 100%, 100% 100%)";
+
+            const originalContainer = document.querySelector('#act-rupa .bg-slate-50');
+            originalContainer.innerHTML = `
+                <div id="drag-roof" draggable="true" ondragstart="drag(event)" class="w-16 h-16 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing">
+                    <div class="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[50px] border-b-red-500"></div>
+                    <span class="text-[10px] font-bold mt-1 text-red-600">Atap</span>
+                </div>
+                <div id="drag-base" draggable="true" ondragstart="drag(event)" class="w-16 h-16 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing">
+                    <div class="w-12 h-12 bg-blue-500 rounded"></div>
+                    <span class="text-[10px] font-bold mt-1 text-blue-600">Dinding</span>
+                </div>
+                <div id="drag-sun" draggable="true" ondragstart="drag(event)" class="w-16 h-16 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing">
+                    <div class="w-12 h-12 bg-yellow-400 rounded-full"></div>
+                    <span class="text-[10px] font-bold mt-1 text-yellow-600">Matahari</span>
+                </div>
+            `;
+
+            solvedParts = { 'drag-roof': false, 'drag-base': false, 'drag-sun': false };
+            playAudioPop();
+        }
+
+        // ------------------ SUB ACTIVE 3: SENTUH JALINAN ------------------
+        function simulatePet(animal) {
+            const effectEl = document.getElementById(`pet-effect-${animal}`);
+            effectEl.classList.remove('opacity-0');
+            effectEl.classList.add('opacity-100');
+            
+            if (animal === 'arnab') {
+                playChimeSuccess();
+                speakText("Hmm, lembutnya bulu arnab ini!");
+            } else {
+                playAudioPop();
+                speakText("Cengkerang kura-kura ini kasar dan keras!");
+            }
+
+            setTimeout(() => {
+                effectEl.classList.remove('opacity-100');
+                effectEl.classList.add('opacity-0');
+            }, 1200);
+        }
+
+        // ------------------ SUB ACTIVE 4: BANCUH WARNA ------------------
+        let mixChoice1 = { name: 'merah', hex: '#ef4444' };
+        let mixChoice2 = { name: 'kuning', hex: '#facc15' };
+
+        function selectMixColor(tubeNum, colorName, colorHex) {
+            if (tubeNum === 1) {
+                mixChoice1 = { name: colorName, hex: colorHex };
+                const buttons = ['merah', 'kuning', 'biru'];
+                buttons.forEach(b => {
+                    const btn = document.getElementById(`mix1-${b}`);
+                    btn.className = b === colorName ? `w-10 h-10 rounded-full bg-${b === 'kuning' ? 'yellow-400' : b === 'merah' ? 'red-500' : 'blue-500'} border-4 border-slate-300 transition-all` : `w-10 h-10 rounded-full bg-${b === 'kuning' ? 'yellow-400' : b === 'merah' ? 'red-500' : 'blue-500'} border-4 border-white transition-all`;
+                });
+            } else {
+                mixChoice2 = { name: colorName, hex: colorHex };
+                const buttons = ['merah', 'kuning', 'biru'];
+                buttons.forEach(b => {
+                    const btn = document.getElementById(`mix2-${b}`);
+                    btn.className = b === colorName ? `w-10 h-10 rounded-full bg-${b === 'kuning' ? 'yellow-400' : b === 'merah' ? 'red-500' : 'blue-500'} border-4 border-slate-300 transition-all` : `w-10 h-10 rounded-full bg-${b === 'kuning' ? 'yellow-400' : b === 'merah' ? 'red-500' : 'blue-500'} border-4 border-white transition-all`;
+                });
+            }
+            playAudioPop();
+            updateLiquidColorImmediate();
+        }
+
+        function updateLiquidColorImmediate() {
+            const liquid = document.getElementById('beaker-liquid');
+            liquid.setAttribute('fill', mixChoice1.hex);
+        }
+
+        function triggerMix() {
+            const overlay = document.getElementById('shake-overlay');
+            overlay.classList.remove('hidden');
+            playAudioPop();
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                calculateMixResult();
+            }, 1200);
+        }
+
+        function calculateMixResult() {
+            const resultBox = document.getElementById('mix-result-box');
+            const catText = document.getElementById('mix-category');
+            const liquid = document.getElementById('beaker-liquid');
+
+            const c1 = mixChoice1.name;
+            const c2 = mixChoice2.name;
+
+            let resultColor = "";
+            let resultHex = "";
+            let category = "Warna Sekunder";
+
+            if (c1 === c2) {
+                resultColor = c1.toUpperCase();
+                resultHex = mixChoice1.hex;
+                category = "Warna Primer";
+            } else if ((c1 === 'merah' && c2 === 'kuning') || (c1 === 'kuning' && c2 === 'merah')) {
+                resultColor = "JINGGA";
+                resultHex = "#f97316";
+            } else if ((c1 === 'kuning' && c2 === 'biru') || (c1 === 'biru' && c2 === 'kuning')) {
+                resultColor = "HIJAU";
+                resultHex = "#22c55e";
+            } else if ((c1 === 'biru' && c2 === 'merah') || (c1 === 'merah' && c2 === 'biru')) {
+                resultColor = "UNGU";
+                resultHex = "#a855f7";
+            }
+
+            resultBox.innerText = resultColor;
+            resultBox.className = `px-4 py-2 text-white rounded-xl font-black text-center min-w-[120px] transition-all transform scale-110`;
+            resultBox.style.backgroundColor = resultHex;
+            catText.innerText = `Kategori: ${category}`;
+            liquid.setAttribute('fill', resultHex);
+            
+            speakText(`Hasil campuran ${c1} dan ${c2} ialah warna ${resultColor}!`);
+            playChimeSuccess();
+        }
+
+
+        // ================== TAB 3: KUIZ SENI GAME LOGIC ==================
+        const questionsList = [
+            {
+                visual: "🐱",
+                text: "Garisan yang terdapat pada badan kucing berbentuk meliuk-liuk dipanggil...",
+                options: ["Garisan Zigzag", "Garisan Melengkung", "Garisan Putus-putus"],
+                correct: 1
+            },
+            {
+                visual: "🏠",
+                text: "Atap rumah ini berbentuk...",
+                options: ["Bulatan", "Segiempat", "Segi Tiga"],
+                correct: 2
+            },
+            {
+                visual: "🐰",
+                text: "Apabila kita mengusap bulu arnab, sifat permukaannya terasa sangat...",
+                options: ["Kasar", "Tajam", "Lembut"],
+                correct: 2
+            },
+            {
+                visual: "🎨",
+                text: "Warna Hijau dihasilkan daripada campuran warna Kuning dan...",
+                options: ["Merah", "Biru", "Ungu"],
+                correct: 1
+            },
+            {
+                visual: "🧱",
+                text: "Jalinan tampak ialah jalinan yang...",
+                options: ["Hanya boleh dilihat tetapi tidak dirasa", "Boleh dirasa dengan tangan", "Boleh mengeluarkan warna"],
+                correct: 0
+            },
+            {
+                visual: "📦",
+                text: "Antara objek berikut, yang manakah mempunyai unsur BENTUK (3 Dimensi)?",
+                options: ["Lukisan Segiempat", "Tin minuman (Silinder)", "Bulatan rata"],
+                correct: 1
+            },
+            {
+                visual: "⛰️",
+                text: "Ruang yang berada di bahagian paling jauh dalam sesuatu landskap dipanggil...",
+                options: ["Ruang Depan", "Ruang Tengah", "Ruang Belakang"],
+                correct: 2
+            },
+            {
+                visual: "🦋",
+                text: "Kepak rama-rama yang sama rupa di bahagian kiri dan kanan menunjukkan prinsip...",
+                options: ["Imbangan Simetri", "Kontras", "Harmoni"],
+                correct: 0
+            },
+            {
+                visual: "🐞",
+                text: "Kumbang kura-kura merah cerah yang menonjol di atas daun hijau menunjukkan prinsip...",
+                options: ["Harmoni", "Kontras", "Penegasan"],
+                correct: 2
+            },
+            {
+                visual: "🎨",
+                text: "Gabungan pelbagai warna, bentuk, dan garisan yang berbeza dalam satu karya seni dipanggil...",
+                options: ["Kepelbagaian", "Imbangan", "Kesatuan"],
+                correct: 0
+            },
+            {
+                visual: "🤝",
+                text: "Apabila semua bahagian dalam lukisan nampak sesuai bekerjasama dan mempunyai satu tema seragam, ini menunjukkan prinsip...",
+                options: ["Kontras", "Kesatuan", "Ruang"],
+                correct: 1
+            },
+            {
+                visual: "🐦",
+                text: "Lukisan burung terbang berkumpulan yang memberi ilusi hidup dan berpindah tempat melambangkan prinsip...",
+                options: ["Bentuk", "Jalinan", "Irama dan Pergerakan"],
+                correct: 2
+            }
         ];
 
-        let currentCategory = "Unsur Seni";
-        let filteredDataset = [];
-        let trackIndex = 0;
+        let quizIndex = 0;
+        let score = 0;
 
-        const domFlashcard = document.getElementById('flashcardItem');
-        const domFrontFace = document.getElementById('cardFrontFace');
-        const domTitle = document.getElementById('displayTitle');
-        const domCategory = document.getElementById('displayCategory');
-        const domDesc = document.getElementById('displayDesc');
-        const domCounter = document.getElementById('displayCounter');
-        const btnUnsur = document.getElementById('btnUnsur');
-        const btnPrinsip = document.getElementById('btnPrinsip');
-
-        function switchCategory(category) {
-            currentCategory = category;
-            trackIndex = 0;
-
-            if (category === "Unsur Seni") {
-                btnUnsur.classList.add('active');
-                btnPrinsip.classList.remove('active');
-                domFrontFace.classList.add('unsur-warna');
-                domFrontFace.classList.remove('prinsip-warna');
-            } else {
-                btnPrinsip.classList.add('active');
-                btnUnsur.classList.remove('active');
-                domFrontFace.classList.add('prinsip-warna');
-                domFrontFace.classList.remove('unsur-warna');
-            }
-
-            filteredDataset = masterDataset.filter(item => item.category === currentCategory);
-
-            if (domFlashcard.classList.contains('flipped')) {
-                domFlashcard.classList.remove('flipped');
-                setTimeout(() => { renderCardContent(); }, 300);
-            } else {
-                renderCardContent();
-            }
+        function startQuiz() {
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('quiz-active-screen').classList.remove('hidden');
+            quizIndex = 0;
+            score = 0;
+            loadQuestion();
         }
 
-        function toggleFlip() {
-            domFlashcard.classList.toggle('flipped');
+        function loadQuestion() {
+            const questionObj = questionsList[quizIndex];
+            
+            document.getElementById('current-q-index').innerText = quizIndex + 1;
+            document.getElementById('quiz-progress').style.width = `${((quizIndex + 1) / 12) * 100}%`;
+            
+            document.getElementById('question-visual').innerText = questionObj.visual;
+            document.getElementById('question-text').innerText = questionObj.text;
+            
+            const optContainer = document.getElementById('quiz-options-container');
+            optContainer.innerHTML = "";
+            
+            questionObj.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full py-3 px-4 text-left border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center justify-between shadow-sm";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-circle-chevron-right text-slate-300"></i>`;
+                btn.onclick = () => selectOption(idx);
+                optContainer.appendChild(btn);
+            });
+
+            updateQuizStars();
+            speakText(questionObj.text);
         }
 
-        function renderCardContent() {
-            const currentItem = filteredDataset[trackIndex];
-            domTitle.innerText = currentItem.title;
-            domCategory.innerText = currentItem.category;
-            domDesc.innerHTML = currentItem.desc; 
-            domCounter.innerText = `${trackIndex + 1} / ${filteredDataset.length}`;
-        }
-
-        function navigateCard(direction) {
-            if (domFlashcard.classList.contains('flipped')) {
-                domFlashcard.classList.remove('flipped');
-                setTimeout(() => { executeNavigation(direction); }, 300);
-            } else {
-                executeNavigation(direction);
+        function updateQuizStars() {
+            const container = document.getElementById('star-score-container');
+            container.innerHTML = "";
+            const totalQuestions = questionsList.length;
+            for (let i = 0; i < totalQuestions; i++) {
+                if (i < score) {
+                    container.innerHTML += `<i class="fa-solid fa-star text-yellow-400 text-xs"></i>`;
+                } else {
+                    container.innerHTML += `<i class="fa-regular fa-star text-yellow-300 text-xs"></i>`;
+                }
             }
         }
 
-        function executeNavigation(direction) {
-            trackIndex += direction;
-            if (trackIndex >= filteredDataset.length) trackIndex = 0;
-            if (trackIndex < 0) trackIndex = filteredDataset.length - 1;
-            renderCardContent();
+        function selectOption(idx) {
+            const questionObj = questionsList[quizIndex];
+            const optionsButtons = document.getElementById('quiz-options-container').querySelectorAll('button');
+
+            optionsButtons.forEach(btn => btn.disabled = true);
+
+            if (idx === questionObj.correct) {
+                optionsButtons[idx].className = "w-full py-3 px-4 text-left border-2 border-emerald-500 bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center justify-between";
+                optionsButtons[idx].querySelector('i').className = "fa-solid fa-circle-check text-emerald-600";
+                score++;
+                playChimeSuccess();
+                speakText("Hebat! Jawapan betul!");
+            } else {
+                optionsButtons[idx].className = "w-full py-3 px-4 text-left border-2 border-red-500 bg-red-100 text-red-800 rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center justify-between";
+                optionsButtons[idx].querySelector('i').className = "fa-solid fa-circle-xmark text-red-600";
+                optionsButtons[questionObj.correct].className = "w-full py-3 px-4 text-left border-2 border-emerald-500 bg-emerald-50 text-emerald-800 rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center justify-between";
+                
+                playFailSound();
+                speakText("Salah, tidak mengapa! Cuba lagi nanti.");
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                if (quizIndex < questionsList.length) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }, 1800);
         }
 
-        switchCategory('Unsur Seni');
+        function showResults() {
+            document.getElementById('quiz-active-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+
+            document.getElementById('correct-count').innerText = score;
+            
+            const starsContainer = document.getElementById('final-stars');
+            starsContainer.innerHTML = "";
+            for (let i = 0; i < questionsList.length; i++) {
+                if (i < score) {
+                    starsContainer.innerHTML += `<i class="fa-solid fa-star text-yellow-400"></i>`;
+                } else {
+                    starsContainer.innerHTML += `<i class="fa-regular fa-star text-yellow-300"></i>`;
+                }
+            }
+
+            const dateStr = new Date().toLocaleDateString('ms-MY', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('current-date').innerText = dateStr;
+
+            if (score === questionsList.length) {
+                speakText("Luar biasa! Anda mendapat kesemua bintang pencapaian. Sijil penghargaan anda kini sedia.");
+                startConfetti();
+            } else {
+                speakText(`Tamat kuiz! Anda mendapat ${score} bintang daripada dua belas.`);
+            }
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-start-screen').classList.remove('hidden');
+            playAudioPop();
+        }
+
+        // CONFETTI EFFECT
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            let particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 4 + 2,
+                    d: Math.random() * canvas.height,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    tilt: Math.random() * 10 - 5
+                });
+            }
+
+            function drawConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+
+                    p.y += Math.cos(p.d) + 1 + p.r / 2;
+                    p.tilt = Math.sin(p.d) * 5;
+                    p.d += 0.05;
+
+                    if (p.y > canvas.height) {
+                        particles[i] = {
+                            x: Math.random() * canvas.width,
+                            y: -20,
+                            r: p.r,
+                            d: p.d,
+                            color: p.color,
+                            tilt: p.tilt
+                        };
+                    }
+                });
+            }
+
+            let interval = setInterval(drawConfetti, 20);
+            setTimeout(() => clearInterval(interval), 4000);
+        }
+
+        window.onload = function() {
+            updateLiquidColorImmediate();
+        }
     </script>
 </body>
 </html>
